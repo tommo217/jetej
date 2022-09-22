@@ -30,7 +30,7 @@ FUNCTION_HEADER: 'function:';
 FUNCTION_PARAM: 'param:';
 FUNCTION_BODY: 'body:';
 
-WS: [\r\n\t]+ -> channel(HIDDEN);
+WS: [\r\n\t ]+ -> channel(HIDDEN);
 IDENTIFIER: [a-zA-Z_][a-zA-Z0-9_]*;
 INTEGER: [0-9]+;
 BOOL: 'true' | 'false';
