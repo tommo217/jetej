@@ -31,7 +31,6 @@ FUNCTION_HEADER: 'function:';
 FUNCTION_PARAM: 'param:';
 FUNCTION_BODY: 'body:';
 
-WS: [\r\n\t ]+ -> channel(HIDDEN);
 INTEGER: [0-9]+;
 BOOL: 'true' | 'false';
 END_OF_LINE: ';';
@@ -52,6 +51,7 @@ NOT: '!';
 BOOL_OP: 'and' | 'or' | 'xor';
 COMPARE_OP: '==' | '!=' | '>' | '>=' | '<' | '<=';
 IDENTIFIER: [a-zA-Z_][a-zA-Z0-9_]*;
+WS: [\r\n\t ]+ -> channel(HIDDEN);
 
 mode FILE_MODE;
 FILE_PATH: ~[[|\]\r\n]* -> mode(DEFAULT_MODE);
