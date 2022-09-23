@@ -55,81 +55,81 @@ Note: These responsiblities are not set in stone, and if anyone needs help, we w
 
 
 ## Draft Grammar
-The following is an example game written in our planned DSL:
-game:
-background: black
-width: 300
-height: 300
-score: 30
-time: 300;
-
-object:
-name: player
-image: src/resources/player.png
-life: 2
-start x: 150
-start y: 300
-size x: 10
-size y: 10
-update: basicControl(10);
-
-object:
-name: apple
-number: 5
-image: src/resources/apple.png
-start x: random(5,295)
-start y: 0
-speed x: random(-1,1)
-speed y: random(2,5)
-size x: 10
-size y: 10;
-
-object:
-name: bomb
-number: 5
-image: src/resources/bomb.png
-start x: random(5,295)
-start y: 0
-speed y: random(2,5)
-size x: 10
-size y: 10;
-
-object:
-name: ground
-image: src/resources/ground.png
-start x: [0-300]
-start y: 300
-size x: 10
-size y: 10
-update: updateFunc();
-
-event:
-object1: player
-object2: apple
-actions: score(1), disappear(apple);
-
-event:
-object1: player
-object2: bomb
-actions: decreaseScore(5), disappear(bomb), decreaseHealth(player, 1);
-
-event:
+The following is an example game written in our planned DSL:  
+game:  
+background: black  
+width: 300  
+height: 300  
+score: 30  
+time: 300;  
+  
+object:  
+name: player  
+image: src/resources/player.png  
+life: 2  
+start x: 150  
+start y: 300  
+size x: 10  
+size y: 10  
+update: basicControl(10);  
+  
+object:  
+name: apple  
+number: 5  
+image: src/resources/apple.png  
+start x: random(5,295)  
+start y: 0  
+speed x: random(-1,1)  
+speed y: random(2,5)  
+size x: 10  
+size y: 10;  
+  
+object:  
+name: bomb  
+number: 5  
+image: src/resources/bomb.png  
+start x: random(5,295)  
+start y: 0  
+speed y: random(2,5)  
+size x: 10  
+size y: 10;  
+  
+object:  
+name: ground  
+image: src/resources/ground.png  
+start x: [0-300]  
+start y: 300  
+size x: 10  
+size y: 10  
+update: updateFunc();  
+  
+event:  
+object1: player  
+object2: apple  
+actions: score(1), disappear(apple);  
+  
+event:  
+object1: player  
+object2: bomb  
+actions: decreaseScore(5), disappear(bomb), decreaseHealth(player, 1);  
+  
+event:  
 object1: ground
 object2: apple
 actions: disappear(apple);
 
 event:
-object1: ground
-object2: bomb
-actions: disappear(bomb);
-
-function:
-name: score
-param: i
-body:
-{
-score = score + i;
-};
+object1: ground  
+object2: bomb  
+actions: disappear(bomb);  
+  
+function:  
+name: score  
+param: i  
+body:  
+{  
+score = score + i;  
+};  
 
 
 ## TA Feedback
