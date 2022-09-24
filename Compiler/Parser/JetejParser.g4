@@ -47,4 +47,4 @@ assignment: IDENTIFIER ASSIGN expression;
 block: BODY_START line* BODY_END;
 expression: expression BOOL_OP expression| BOOL | IDENTIFIER| INTEGER |funCall | expression (ADDOP|MULTIOP)
 expression|ADDOP expression|SQ_LPAREN expression expression SQ_RPAREN;
-funCall: IDENTIFIER LPAREN expression (COMMA expression)* RPAREN;
+funCall: IDENTIFIER (LPAREN expression (COMMA expression)* RPAREN|LPAREN RPAREN);
