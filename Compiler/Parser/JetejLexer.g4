@@ -56,3 +56,8 @@ COMMENT: '/*' .*? '*/' -> channel(HIDDEN);
 LINE_COMMENT: '//' ~[\r\n]* -> channel(HIDDEN);
 mode FILE_MODE;
 FILE_PATH: ~[[|\]\r\n]* -> mode(DEFAULT_MODE);
+
+
+
+
+
