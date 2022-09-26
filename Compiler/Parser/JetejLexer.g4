@@ -14,10 +14,10 @@ OBJECT_IMAGE: 'image:' WS* -> mode(FILE_MODE);
 OBJECT_LIFE: 'life:';
 OBJECT_START_X: 'start x:';
 OBJECT_START_Y: 'start y:';
-OBJECT_SPEED_X: 'speed x';
-OBJECT_SPEED_Y: 'speed y';
+OBJECT_SPEED_X: 'speed x:';
+OBJECT_SPEED_Y: 'speed y:';
 OBJECT_SIZE_X: 'size x:';
-OBJECT_SIZE_Y: 'size y';
+OBJECT_SIZE_Y: 'size y:';
 OBJECT_UPDATE: 'update:';
 OBJECT_NUMBER: 'number:';
 OBJECT_MASS: 'mass:';
@@ -52,6 +52,12 @@ BOOL_OP: 'and' | 'or' | 'xor';
 COMPARE_OP: '==' | '!=' | '>' | '>=' | '<' | '<=';
 IDENTIFIER: [a-zA-Z_][a-zA-Z0-9_]*;
 WS: [\r\n\t ]+ -> channel(HIDDEN);
-
+COMMENT: '/*' .*? '*/' -> channel(HIDDEN);
+LINE_COMMENT: '//' ~[\r\n]* -> channel(HIDDEN);
 mode FILE_MODE;
 FILE_PATH: ~[[|\]\r\n]* -> mode(DEFAULT_MODE);
+
+
+
+
+
