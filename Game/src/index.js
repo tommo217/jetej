@@ -8,19 +8,32 @@ Jack
 Jacqueline
  */
 
+
+/*
+
+-----------------------Physics---------------------------
+
+ */
+
 // template for hitbox type
 // x1 < x2
 // y1 < y2
 // mass > 0 || mass === -1
 // when mass === -1, it will act as infinite mass and will not be moved during a collision
 // the position of the corresponding object is always equal to x1, y1
+// (vx, vy) = velocity in units/s
+// bounce = bounce coefficient, should be in range(0,1). This tells the physics how much to bounce the hitbox when it
+//  collides with another hitbox
 class HitboxAABB {
-    constructor(x1, y1, x2, y2, mass) {
+    constructor(x1, y1, x2, y2, mass, vx, vy, bounce) {
         this.x1 = x1;
         this.x2 = x2;
         this.y1 = y1;
         this.y2 = y2;
         this.mass = mass;
+        this.vx = vx;
+        this.vy = vy;
+        this.kb = bounce;
     }
 
     move(delta_x, delta_y) {
@@ -28,6 +41,13 @@ class HitboxAABB {
         this.x2 += delta_x;
         this.y1 += delta_y;
         this.y2 += delta_y;
+    }
+
+    applyVelocity(time) {
+        this.x1 += this.vx * time;
+        this.x2 += this.vx * time;
+        this.y1 += this.vy * time;
+        this.y2 += this.vy * time;
     }
 }
 
@@ -49,19 +69,23 @@ function applyHardBodyCollisionMovementAABB(hb1, hb2) {
         y_diff *= (hb1.y1 < hb2.y1) ? -1 : 1;
         hb1.move(0, y_diff * mass_effect1);
         hb2.move(0, -y_diff * mass_effect2);
+        hb1.vy *= -1 * mass_effect1 * hb1.kb;
+        hb2.vy *= -1 * mass_effect2 * hb2.kb;
     } else {
         x_diff *= (hb1.x1 < hb2.x1) ? -1 : 1;
         hb1.move(x_diff * mass_effect1, 0);
         hb2.move(-x_diff * mass_effect2, 0);
+        hb1.vx *= -1 * mass_effect1 * hb1.kb;
+        hb2.vx *= -1 * mass_effect2 * hb2.kb;
     }
 }
 
 //testing code for the simple AABB physics
 /*
-let hb1 = new HitboxAABB(0, 0, 1, 1, 1);
-let hb2 = new HitboxAABB(0.5, 0.5, 2, 2, 3);
-let hb3 = new HitboxAABB(1.5, 1.5, 2.5, 2.5, -1);
-let hb4 = new HitboxAABB(0.5, 0.5, 2, 2, 3);
+let hb1 = new HitboxAABB(0, 0, 1, 1, 1, 0, 0, 0);
+let hb2 = new HitboxAABB(0.5, 0.5, 2, 2, 3, 0, 0, 0);
+let hb3 = new HitboxAABB(1.5, 1.5, 2.5, 2.5, -1, 0, 0, 0);
+let hb4 = new HitboxAABB(0.5, 0.5, 2, 2, 3, 0, 0, 0);
 //true
 console.log(isCollidingAABB(hb1, hb2));
 console.log(isCollidingAABB(hb2, hb1));
@@ -81,6 +105,12 @@ applyHardBodyCollisionMovementAABB(hb4, hb3);
 console.log(hb4, hb3, isCollidingAABB(hb3, hb4));
 */
 
+
+/*
+
+----------------------------Helpers--------------------------
+
+ */
 
 function random_end(end) {
     return Math.floor(Math.random() * end);
@@ -109,6 +139,13 @@ for (let i = 0; i < 10; i++) {
 }
 */
 
+/*
+
+----------------------------Main--------------------------
+
+ */
+
+
 let LEFT, UP, RIGHT, DOWN;
 
 const canvas = document.querySelector(".game-frame");
@@ -119,8 +156,8 @@ class Player extends HitboxAABB {
     keyControl;
     playerEl;
 
-    constructor(name, x1, y1, x2, y2, mass) {
-        super(x1, y1, x2, y2, mass);
+    constructor(name, x1, y1, x2, y2, mass, vx, vy, bounce) {
+        super(x1, y1, x2, y2, mass, vx, vy, bounce);
         this.name = name;
         this.playerEl = document.createElement("div");
     }
@@ -197,10 +234,8 @@ function keyControl() {
 }
 
 keyControl();
-const player = new Player("Mario", 10, 10, 100, 100, 1);
-player.drawRect(
-  "https://upload.wikimedia.org/wikipedia/en/a/a9/MarioNSMBUDeluxe.png"
-);
+const player = new Player("Mario", 10, 10, 100, 100, 1, 0, 0, 0);
+player.drawRect("https://upload.wikimedia.org/wikipedia/en/a/a9/MarioNSMBUDeluxe.png");
 
 function mainLoop() {
     player.updatePosition(3);
