@@ -38,13 +38,13 @@ function:FUNCTION_HEADER name function_param? function_body;
 function_param:FUNCTION_PARAM IDENTIFIER (COMMA IDENTIFIER)*;
 function_body:FUNCTION_BODY block END_OF_LINE;
 
+block: BODY_START line* BODY_END;
 line: statement | ifBlock | whileBlock;
 statement: (assignment|funCall) END_OF_LINE;
 ifBlock:IF LPAREN expression RPAREN block (ELSE elseIfBlock);
 elseIfBlock: block | ifBlock;
 whileBlock: WHILE LPAREN  expression RPAREN block;
 assignment: IDENTIFIER ASSIGN expression;
-block: BODY_START line* BODY_END;
-expression: expression BOOL_OP expression| BOOL | IDENTIFIER| INTEGER |funCall | expression (ADDOP|MULTIOP)
-expression|ADDOP expression|SQ_LPAREN expression expression SQ_RPAREN;
+expression: expression (BOOL_OP|COMPARE_OP) expression| BOOL | IDENTIFIER| INTEGER |funCall | expression (ADDOP|MULTIOP)
+expression|ADDOP expression|SQ_LPAREN expression expression SQ_RPAREN|NOT expression;
 funCall: IDENTIFIER (LPAREN expression (COMMA expression)* RPAREN|LPAREN RPAREN);
