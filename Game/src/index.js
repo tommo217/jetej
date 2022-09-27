@@ -108,6 +108,42 @@ console.log(hb4, hb3, isCollidingAABB(hb3, hb4));
 
 /*
 
+----------------------------Rendering--------------------------
+
+ */
+
+
+// this class is used to store code used for rendering things to html
+class Sprite {
+    constructor(sprite_url, width, height) {
+        this.sprite_url = sprite_url;
+        this.width = width;
+        this.height = height;
+
+        this.objElement = document.createElement("div");
+
+        this.objElement.style.height = `${width}px`;
+        this.objElement.style.width = `${height}px`;
+        this.objElement.style.backgroundImage = `url(${sprite_url})`;
+        this.objElement.style.backgroundSize = "contain";
+        this.objElement.style.backgroundRepeat = "no-repeat";
+        this.objElement.style.backgroundPosition = "center";
+        this.objElement.style.position = "absolute";
+        canvas.appendChild(this.objElement);
+
+        this.updateSpritePosition(0, 0);
+    }
+
+    // updates the top left position of the sprite's object element
+    updateSpritePosition(x, y) {
+        this.objElement.style.left = x + "px";
+        this.objElement.style.top = y + "px";
+    }
+}
+
+
+/*
+
 ----------------------------Helpers--------------------------
 
  */
@@ -146,10 +182,67 @@ for (let i = 0; i < 10; i++) {
  */
 
 
-let LEFT, UP, RIGHT, DOWN;
+// TODO put this in a class maybe? Or not, this is fine too
+let LEFT = false;
+let RIGHT = false;
+let UP = false;
+let DOWN = false;
 
 const canvas = document.querySelector(".game-frame");
 
+class GameObject {
+    constructor(name, sprite_url, x, y, size_x, size_y, mass, vx, vy, bounce) {
+        // these two should be statics, but I don't think that works properly in .js
+        this.name = name; // by convention this should be equal to the name of the class
+        this.sprite = new Sprite(sprite_url, size_x, size_y);
+        this.hb = new HitboxAABB(x, y, x + size_x, y + size_y, mass, vx, vy, bounce);
+
+        this.updateSpritePos();
+    }
+
+    updateSpritePos() {
+        this.sprite.updateSpritePosition(this.hb.x1, this.hb.y1);
+    }
+
+    update() {
+        // empty func, here for overloading
+    }
+}
+
+// TODO delete this class for release, this is a pseudo class for mimicking the compiler output and testing
+class Player extends GameObject {
+    constructor(x, y) {
+        super("Player",
+              "https://upload.wikimedia.org/wikipedia/en/a/a9/MarioNSMBUDeluxe.png",
+              x, y, 90, 90, 1, 0, 0, 0);
+        this.speed_x = 150; //150units/s
+        this.speed_y = 150;
+    }
+
+    update() {
+        // TODO make this more abstract?
+        if (LEFT !== RIGHT) {
+            if (LEFT === true) {
+                this.hb.vx = -this.speed_x;
+            } else if (RIGHT === true) {
+                this.hb.vx = this.speed_x;
+            }
+        } else {
+            this.hb.vx = 0;
+        }
+        if (UP !== DOWN) {
+            if (UP === true) {
+                this.hb.vy = -this.speed_y
+            } else if (DOWN === true) {
+                this.hb.vy = this.speed_y
+            }
+        } else {
+            this.hb.vy = 0;
+        }
+    }
+}
+
+/*
 class Player extends HitboxAABB {
     name;
     image;
@@ -199,6 +292,13 @@ class Player extends HitboxAABB {
         this.playerEl.style.top = this.y1 + "px";
     }
 }
+*/
+
+/*
+
+---------------------------------Input Watching-------------------------
+
+ */
 
 // keyControl() is copied from https://github.com/danielszabo88/mocorgo by user danielszabo88
 function keyControl() {
@@ -232,8 +332,60 @@ function keyControl() {
         }
     });
 }
-
 keyControl();
+
+/*
+
+------------------------------------------Game Loop---------------------------------
+
+ */
+
+// all objects will be created here
+const GameObjectList = [];
+
+// timers
+let time_now = Date.now();
+let time_last_frame = Date.now();
+let time_elapsed = 0;
+
+function updateTimers() {
+    time_last_frame = time_now;
+    time_now = Date.now();
+    time_elapsed = (time_now - time_last_frame) * 0.001;
+}
+
+function applyVelocityToAllHitboxes() {
+    GameObjectList.forEach(go => go.hb.applyVelocity(time_elapsed));
+}
+
+function runAllObjectUpdates() {
+    GameObjectList.forEach(go => go.update());
+}
+
+function updateAllVisualElements() {
+    GameObjectList.forEach(go => go.updateSpritePos());
+}
+
+function gameLoop() {
+    updateTimers();
+    runAllObjectUpdates();
+    applyVelocityToAllHitboxes();
+    // TODO check collision to create a list of all occuring collisions
+    // TODO apply collision for objects that have collision and are colliding
+    updateAllVisualElements();
+    requestAnimationFrame(gameLoop);
+}
+
+
+/*
+
+------------------------------------------Start Game--------------------------------
+
+ */
+
+GameObjectList.push(new Player(10, 10));
+gameLoop();
+/*
 const player = new Player("Mario", 10, 10, 100, 100, 1, 0, 0, 0);
 player.drawRect("https://upload.wikimedia.org/wikipedia/en/a/a9/MarioNSMBUDeluxe.png");
 
@@ -243,3 +395,4 @@ function mainLoop() {
 
     requestAnimationFrame(mainLoop);
 }
+*/
