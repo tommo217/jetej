@@ -51,6 +51,13 @@ class HitboxAABB {
     }
 }
 
+class Collision {
+    constructor(go1, go2) {
+        this.go1 = go1;
+        this.go2 = go2;
+    }
+}
+
 function isCollidingAABB(hb1, hb2) {
     return hb1.x1 < hb2.x2 && hb1.x2 > hb2.x1 && hb1.y1 < hb2.y2 && hb1.y2 > hb2.y1;
 }
@@ -191,11 +198,12 @@ let DOWN = false;
 const canvas = document.querySelector(".game-frame");
 
 class GameObject {
-    constructor(name, sprite_url, x, y, size_x, size_y, mass, vx, vy, bounce) {
+    constructor(name, sprite_url, x, y, size_x, size_y, mass, vx, vy, bounce, hardBodyCollision) {
         // these two should be statics, but I don't think that works properly in .js
         this.name = name; // by convention this should be equal to the name of the class
         this.sprite = new Sprite(sprite_url, size_x, size_y);
         this.hb = new HitboxAABB(x, y, x + size_x, y + size_y, mass, vx, vy, bounce);
+        this.hardBodyCollision = hardBodyCollision;
 
         this.updateSpritePos();
     }
@@ -210,11 +218,20 @@ class GameObject {
 }
 
 // TODO delete this class for release, this is a pseudo class for mimicking the compiler output and testing
+class Block extends GameObject {
+    constructor(x, y) {
+        super("Block",
+            "../rsrc/black_rectangle.png",
+            x, y, 90, 90, 2, 0, 0, 0, true);
+    }
+}
+
+// TODO delete this class for release, this is a pseudo class for mimicking the compiler output and testing
 class Player extends GameObject {
     constructor(x, y) {
         super("Player",
               "https://upload.wikimedia.org/wikipedia/en/a/a9/MarioNSMBUDeluxe.png",
-              x, y, 90, 90, 1, 0, 0, 0);
+              x, y, 90, 90, 1, 0, 0, 0, true);
         this.speed_x = 150; //150units/s
         this.speed_y = 150;
     }
@@ -342,6 +359,7 @@ keyControl();
 
 // all objects will be created here
 const GameObjectList = [];
+const collisionList = [];
 
 // timers
 let time_now = Date.now();
@@ -362,16 +380,40 @@ function runAllObjectUpdates() {
     GameObjectList.forEach(go => go.update());
 }
 
+function createCollisionList() {
+    collisionList.splice(0, collisionList.length);
+
+    for (let i = 0; i < GameObjectList.length - 1; i++) {
+        for (let j = i + 1; j < GameObjectList.length; j++) {
+            if (isCollidingAABB(GameObjectList[i].hb, GameObjectList[j].hb)) {
+                collisionList.push(new Collision(GameObjectList[i], GameObjectList[j]));
+            }
+        }
+    }
+}
+
+function applyCollisionToAllCollidingHitboxes() {
+    collisionList.forEach((collision) => {
+        if (collision.go1.hardBodyCollision && collision.go2.hardBodyCollision === true) {
+            applyHardBodyCollisionMovementAABB(collision.go1.hb, collision.go2.hb);
+        }
+    });
+}
+
 function updateAllVisualElements() {
     GameObjectList.forEach(go => go.updateSpritePos());
 }
 
 function gameLoop() {
     updateTimers();
+
     runAllObjectUpdates();
+
     applyVelocityToAllHitboxes();
-    // TODO check collision to create a list of all occuring collisions
-    // TODO apply collision for objects that have collision and are colliding
+    createCollisionList();
+    // TODO call collision events for all colliding objects
+    applyCollisionToAllCollidingHitboxes();
+
     updateAllVisualElements();
     requestAnimationFrame(gameLoop);
 }
@@ -383,7 +425,7 @@ function gameLoop() {
 
  */
 
-GameObjectList.push(new Player(10, 10));
+GameObjectList.push(new Player(10, 10), new Block(200, 200), new Block(300, 300));
 gameLoop();
 /*
 const player = new Player("Mario", 10, 10, 100, 100, 1, 0, 0, 0);
