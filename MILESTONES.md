@@ -178,10 +178,10 @@ The syntax we used for the first user study is the same as the one outlined in [
 
 Each codeblock starts with one of the keywords `game`, `object`, `event`, or `function`, and ends with the `;` symbol. Inside a codeblock, each line defines an attribute of the declared keyword, and can accept primitives(number and string), arrays, and function calls. 
 
-
+This is an example of a game written in the DSL syntax: 
 
 <details>
-<summary>This is an example of a game written in the DSL syntax (click me): </summary>
+<summary>(click me)</summary>
 
 ```
 game:
