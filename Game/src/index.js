@@ -260,58 +260,6 @@ class Player extends GameObject {
 }
 
 /*
-class Player extends HitboxAABB {
-    name;
-    image;
-    keyControl;
-    playerEl;
-
-    constructor(name, x1, y1, x2, y2, mass, vx, vy, bounce) {
-        super(x1, y1, x2, y2, mass, vx, vy, bounce);
-        this.name = name;
-        this.playerEl = document.createElement("div");
-    }
-
-    drawRect(img) {
-        this.image = img;
-        this.playerEl.classList.add("agent");
-        this.playerEl.style.height = `${this.y2 - this.y1}px`;
-        this.playerEl.style.width = `${this.x2 - this.x1}px`;
-        this.playerEl.style.backgroundImage = `url(${img})`;
-        this.playerEl.style.backgroundSize = "contain";
-        this.playerEl.style.backgroundRepeat = "no-repeat";
-        this.playerEl.style.backgroundPosition = "center";
-        canvas.appendChild(this.playerEl);
-        this.playerEl.style.position = "absolute";
-        this.playerEl.style.left = this.x1 + "px";
-        this.playerEl.style.top = this.y1 + "px";
-        requestAnimationFrame(mainLoop);
-    }
-
-    updatePosition(speed) {
-        if (LEFT && this.x1 > 0) {
-            this.move(-speed, 0);
-        }
-        if (UP && this.y1 > 0) {
-            this.move(0, -speed);
-        }
-        if (RIGHT && this.x2 < canvas.getBoundingClientRect().width - 5) {
-            this.move(speed, 0);
-        }
-        if (DOWN && this.y2 < canvas.getBoundingClientRect().height - 5) {
-            this.move(0, speed);
-        }
-    }
-
-    renderPlayer() {
-        console.log({ x1: this.x1, y1: this.y1 });
-        this.playerEl.style.left = this.x1 + "px";
-        this.playerEl.style.top = this.y1 + "px";
-    }
-}
-*/
-
-/*
 
 ---------------------------------Input Watching-------------------------
 
@@ -360,6 +308,7 @@ keyControl();
 // all objects will be created here
 const GameObjectList = [];
 const collisionList = [];
+const deleteList = [];
 
 // timers
 let time_now = Date.now();
@@ -404,9 +353,25 @@ function updateAllVisualElements() {
     GameObjectList.forEach(go => go.updateSpritePos());
 }
 
+function iterateDeleteList() {
+    deleteList.forEach((delGo) => {
+        let i = GameObjectList.indexOf(go => go === delGo);
+        if (i !== -1) {
+            GameObjectList.splice(i, 1);
+        }
+    })
+
+    deleteList.splice(0, deleteList.length);
+}
+
+function deleteGO(go) {
+    deleteList.push(go);
+}
+
 function gameLoop() {
     updateTimers();
 
+    iterateDeleteList();
     runAllObjectUpdates();
 
     applyVelocityToAllHitboxes();
@@ -427,14 +392,3 @@ function gameLoop() {
 
 GameObjectList.push(new Player(10, 10), new Block(200, 200), new Block(300, 300));
 gameLoop();
-/*
-const player = new Player("Mario", 10, 10, 100, 100, 1, 0, 0, 0);
-player.drawRect("https://upload.wikimedia.org/wikipedia/en/a/a9/MarioNSMBUDeluxe.png");
-
-function mainLoop() {
-    player.updatePosition(3);
-    player.renderPlayer();
-
-    requestAnimationFrame(mainLoop);
-}
-*/
