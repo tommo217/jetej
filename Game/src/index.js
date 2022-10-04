@@ -200,7 +200,7 @@ const canvas = document.querySelector(".game-frame");
 class GameObject {
     constructor(name, sprite_url, x, y, size_x, size_y, mass, vx, vy, bounce, hardBodyCollision) {
         // these two should be statics, but I don't think that works properly in .js
-        this.name = name; // by convention this should be equal to the name of the class
+        this.objname = name; // by convention this should be equal to the name of the class
         this.sprite = new Sprite(sprite_url, size_x, size_y);
         this.hb = new HitboxAABB(x, y, x + size_x, y + size_y, mass, vx, vy, bounce);
         this.hardBodyCollision = hardBodyCollision;
@@ -299,6 +299,21 @@ function keyControl() {
 }
 keyControl();
 
+
+/*
+
+------------------------------------------Collision Event Functions---------------------------------
+
+ */
+
+
+const eventMap = new Map();
+
+eventMap.set("Player|Block", (object1, object2) => {
+    console.log(object1.objname, object2.objname);
+});
+
+
 /*
 
 ------------------------------------------Game Loop---------------------------------
@@ -341,6 +356,19 @@ function createCollisionList() {
     }
 }
 
+// TODO maybe one day optimize this?
+function callCollisionEvents() {
+    collisionList.forEach((collision) => {
+        let key = collision.go1.objname + "|" + collision.go2.objname;
+        let altKey = collision.go2.objname + "|" + collision.go1.objname;
+        if (eventMap.has(key)) {
+            eventMap.get(key)(collision.go1, collision.go2);
+        } else if (eventMap.has(altKey)) {
+            eventMap.get(altKey)(collision.go2, collision.go1);
+        }
+    });
+}
+
 function applyCollisionToAllCollidingHitboxes() {
     collisionList.forEach((collision) => {
         if (collision.go1.hardBodyCollision && collision.go2.hardBodyCollision === true) {
@@ -376,7 +404,7 @@ function gameLoop() {
 
     applyVelocityToAllHitboxes();
     createCollisionList();
-    // TODO call collision events for all colliding objects
+    callCollisionEvents();
     applyCollisionToAllCollidingHitboxes();
 
     updateAllVisualElements();
