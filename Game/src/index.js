@@ -313,6 +313,89 @@ eventMap.set("Player|Block", (object1, object2) => {
     console.log(object1.objname, object2.objname);
 });
 
+/*
+
+------------------------------------------Image Upload---------------------------------
+
+ */
+
+const fileInput = document.querySelector('#add-image');
+const imageContainer = document.querySelector('.images');
+let imageList = [
+  {name: "circle", source: "images/circle.png"},
+  {name: "hexagon", source: "images/hexagon.png"},
+  {name: "square", source: "images/square.png"},
+  {name: "triangle", source: "images/triangle.png"},
+];
+
+const updateImages = () => {
+  imageContainer.textContent = "";
+  imageList.forEach(image => {
+    const {name, source} = image;
+    const imageDiv = createImage(name, source);
+    imageContainer.appendChild(imageDiv)
+  })
+}
+
+const removeImage = (e) => {
+  const imageDiv = e.target.closest(".image");
+  const imageName = imageDiv.querySelector("p").textContent;
+  console.log({imageName})
+  imageList = imageList.filter(image => {
+    console.log(image.name);
+    return image.name !== imageName;
+  });
+  updateImages();
+}
+
+const createImage = (imageName, imageSource) => {
+  const imageDiv = document.createElement("div");
+  imageDiv.classList.add("image");
+
+  const closeIcon = document.createElement("div");
+  closeIcon.classList.add("close-icon");
+  closeIcon.textContent = "x";
+  closeIcon.addEventListener("click", removeImage)
+
+  const imageElement = document.createElement("img");
+  imageElement.src = imageSource;
+  imageElement.alt = imageName;
+
+  const imageLabel = document.createElement("p");
+  imageLabel.classList.add("image-label");
+  imageLabel.textContent = imageName;
+
+  imageDiv.append(closeIcon, imageElement, imageLabel);
+  return imageDiv;
+};
+
+const handleImageChange = (e) => {
+  const imageFile = e.target.files[0];
+  const imageName = imageFile.name.split(".")[0].split(" ")[0];
+  const ALLOWED_TYPES = ['image/png', 'image/jpeg', 'image/jpg'];
+  if (!imageFile || !ALLOWED_TYPES.includes(imageFile.type)) {
+    // TODO: Error message
+    console.log('Please upload a png, jpeg or jpg file');
+    return;
+  }
+  if (imageList.some(image => image.name === imageName)) {
+    // TODO: Error message
+    console.log('Images should have unique names');
+    return;
+  }
+  let reader = new FileReader();
+  reader.readAsDataURL(imageFile);
+  reader.onloadend = () => {
+    const imagePreview = reader.result;
+    imageList.push({name: imageName, source: imagePreview})
+    const imageDiv = createImage(imageName, imagePreview);
+    imageContainer.appendChild(imageDiv)
+  };
+};
+
+fileInput.addEventListener('change', handleImageChange);
+
+updateImages();
 
 /*
 
