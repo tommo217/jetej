@@ -16,6 +16,11 @@
   - [Progress & Roadmap](#progress--roadmap)
       - [Progress so far](#progress-so-far-1)
       - [Roadmap](#roadmap)
+- [Milestone 4](#milestone-4)
+  - [Status of Implementation](#status-of-implementation)
+  - [Plans for Final User Study](#plans-for-final-user-study)
+  - [Final Roadmap](#final-roadmap)
+  - [Feedback from TA](#feedback-from-ta-2)
 
 # Milestone 1
 
@@ -317,3 +322,39 @@ We also identified the following features that need to be implemented:
  - Write video script (before 10/17) *Edmond/Jack*
  - Record video with voiceover (before 10/17) *Tom*
  - Edit video(before 10/17) *Tom*
+
+
+# Milestone 4
+
+Since the last milestone, grammer has been finialized, minor modifications were made since first user study. Backend engine completed and starting implementation of compiler. 
+
+## Status of Implementation
+### Completed
+  - Lexer/Parser
+  - Backend Engine
+  - UI and integrated game interface
+
+### Ongoing
+  - Parser tree to AST
+  - Compile AST to JS
+
+## Plans for Final User Study
+As scheduled, the final user study will be conducted before 10/14 with a functional prototype of the DSL. The final two condidates selected for the study are different from the first study as required. The skill level of the two also differs with some programming experience under their belts.
+
+### Method of the Study
+  - Providing an example code and example game to the user to familiarize themselves with the syntax and capability of the engine
+  - Providing an example code and the user will identify what the game will look like
+  - Providing an example game and user will implement the functionality to match the game given
+  - If time allows, the user can implement a simple game of their own design
+
+## Final Roadmap
+ - Integrate compiler and game (before 10/14) *All*
+ - Do the second user study(before 10/14) *Edmond/Jingxuan/Jack*
+ - Debugging(before 10/15) *Edmond*
+ - Write video script (before 10/17) *Edmond/Jack*
+ - Record video with voiceover (before 10/17) *Tom*
+ - Edit video(before 10/17) *Tom*
+
+## Feedback from TA
+  - Finalized grammer looks good with enough details and functionality
+  - Start implementing compiler as final deadline approaches
