@@ -87,31 +87,6 @@ function applyHardBodyCollisionMovementAABB(hb1, hb2) {
     }
 }
 
-//testing code for the simple AABB physics
-/*
-let hb1 = new HitboxAABB(0, 0, 1, 1, 1, 0, 0, 0);
-let hb2 = new HitboxAABB(0.5, 0.5, 2, 2, 3, 0, 0, 0);
-let hb3 = new HitboxAABB(1.5, 1.5, 2.5, 2.5, -1, 0, 0, 0);
-let hb4 = new HitboxAABB(0.5, 0.5, 2, 2, 3, 0, 0, 0);
-//true
-console.log(isCollidingAABB(hb1, hb2));
-console.log(isCollidingAABB(hb2, hb1));
-//false
-console.log(isCollidingAABB(hb1, hb3));
-console.log(isCollidingAABB(hb3, hb1));
-//true
-console.log(isCollidingAABB(hb2, hb3));
-console.log(isCollidingAABB(hb3, hb2));
-
-console.log(hb1, hb2);
-applyHardBodyCollisionMovementAABB(hb1, hb2);
-console.log(hb1, hb2, isCollidingAABB(hb1, hb2));
-
-console.log(hb4, hb3);
-applyHardBodyCollisionMovementAABB(hb4, hb3);
-console.log(hb4, hb3, isCollidingAABB(hb3, hb4));
-*/
-
 
 /*
 
@@ -172,17 +147,6 @@ function random(arg1, arg2) {
 }
 
 /*
-// for testing random funcs
-for (let i = 0; i < 10; i++) {
-    console.log(random(10));
-}
-
-for (let i = 0; i < 10; i++) {
-    console.log(random(10, 100));
-}
-*/
-
-/*
 
 ----------------------------Main--------------------------
 
@@ -214,48 +178,6 @@ class GameObject {
 
     update() {
         // empty func, here for overloading
-    }
-}
-
-// TODO delete this class for release, this is a pseudo class for mimicking the compiler output and testing
-class Block extends GameObject {
-    constructor(x, y) {
-        super("Block",
-            "../rsrc/black_rectangle.png",
-            x, y, 90, 90, 2, 0, 0, 0, true);
-    }
-}
-
-// TODO delete this class for release, this is a pseudo class for mimicking the compiler output and testing
-class Player extends GameObject {
-    constructor(x, y) {
-        super("Player",
-              "https://upload.wikimedia.org/wikipedia/en/a/a9/MarioNSMBUDeluxe.png",
-              x, y, 90, 90, 1, 0, 0, 0, true);
-        this.speed_x = 150; //150units/s
-        this.speed_y = 150;
-    }
-
-    update() {
-        // TODO make this more abstract?
-        if (LEFT !== RIGHT) {
-            if (LEFT === true) {
-                this.hb.vx = -this.speed_x;
-            } else if (RIGHT === true) {
-                this.hb.vx = this.speed_x;
-            }
-        } else {
-            this.hb.vx = 0;
-        }
-        if (UP !== DOWN) {
-            if (UP === true) {
-                this.hb.vy = -this.speed_y
-            } else if (DOWN === true) {
-                this.hb.vy = this.speed_y
-            }
-        } else {
-            this.hb.vy = 0;
-        }
     }
 }
 
@@ -299,7 +221,6 @@ function keyControl() {
 }
 keyControl();
 
-
 /*
 
 ------------------------------------------Collision Event Functions---------------------------------
@@ -340,11 +261,7 @@ const updateImages = () => {
 const removeImage = (e) => {
   const imageDiv = e.target.closest(".image");
   const imageName = imageDiv.querySelector("p").textContent;
-  console.log({imageName})
-  imageList = imageList.filter(image => {
-    console.log(image.name);
-    return image.name !== imageName;
-  });
+  imageList = imageList.filter(image => image.name !== imageName);
   updateImages();
 }
 
@@ -407,6 +324,7 @@ updateImages();
 const GameObjectList = [];
 const collisionList = [];
 const deleteList = [];
+const eventMap = new Map();
 
 // timers
 let time_now = Date.now();
@@ -497,9 +415,61 @@ function gameLoop() {
 
 /*
 
-------------------------------------------Start Game--------------------------------
+------------------------------------------Example Generated Code--------------------------------
 
  */
 
+// class defs
+
+// TODO delete this class for release, this is a pseudo class for mimicking the compiler output and testing
+class Block extends GameObject {
+    constructor(x, y) {
+        super("Block",
+            "../rsrc/black_rectangle.png",
+            x, y, 90, 90, 2, 0, 0, 0, true);
+    }
+}
+
+// TODO delete this class for release, this is a pseudo class for mimicking the compiler output and testing
+class Player extends GameObject {
+    constructor(x, y) {
+        super("Player",
+            "https://upload.wikimedia.org/wikipedia/en/a/a9/MarioNSMBUDeluxe.png",
+            x, y, 90, 90, 1, 0, 0, 0, true);
+        this.speed_x = 150; //150units/s
+        this.speed_y = 150;
+    }
+
+    update() {
+        // TODO make this more abstract?
+        if (LEFT !== RIGHT) {
+            if (LEFT === true) {
+                this.hb.vx = -this.speed_x;
+            } else if (RIGHT === true) {
+                this.hb.vx = this.speed_x;
+            }
+        } else {
+            this.hb.vx = 0;
+        }
+        if (UP !== DOWN) {
+            if (UP === true) {
+                this.hb.vy = -this.speed_y
+            } else if (DOWN === true) {
+                this.hb.vy = this.speed_y
+            }
+        } else {
+            this.hb.vy = 0;
+        }
+    }
+}
+
+// TODO this is an example of an event collision function, delete for release
+eventMap.set("Player|Block", (object1, object2) => {
+    console.log(object1.objname, object2.objname);
+});
+
+// TODO example spawning objects, delete for release
 GameObjectList.push(new Player(10, 10), new Block(200, 200), new Block(300, 300));
+
+// start game loop
 gameLoop();
