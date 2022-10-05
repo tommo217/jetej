@@ -51,6 +51,13 @@ class HitboxAABB {
     }
 }
 
+class Collision {
+    constructor(go1, go2) {
+        this.go1 = go1;
+        this.go2 = go2;
+    }
+}
+
 function isCollidingAABB(hb1, hb2) {
     return hb1.x1 < hb2.x2 && hb1.x2 > hb2.x1 && hb1.y1 < hb2.y2 && hb1.y2 > hb2.y1;
 }
@@ -191,11 +198,12 @@ let DOWN = false;
 const canvas = document.querySelector(".game-frame");
 
 class GameObject {
-    constructor(name, sprite_url, x, y, size_x, size_y, mass, vx, vy, bounce) {
+    constructor(name, sprite_url, x, y, size_x, size_y, mass, vx, vy, bounce, hardBodyCollision) {
         // these two should be statics, but I don't think that works properly in .js
-        this.name = name; // by convention this should be equal to the name of the class
+        this.objname = name; // by convention this should be equal to the name of the class
         this.sprite = new Sprite(sprite_url, size_x, size_y);
         this.hb = new HitboxAABB(x, y, x + size_x, y + size_y, mass, vx, vy, bounce);
+        this.hardBodyCollision = hardBodyCollision;
 
         this.updateSpritePos();
     }
@@ -210,11 +218,20 @@ class GameObject {
 }
 
 // TODO delete this class for release, this is a pseudo class for mimicking the compiler output and testing
+class Block extends GameObject {
+    constructor(x, y) {
+        super("Block",
+            "../rsrc/black_rectangle.png",
+            x, y, 90, 90, 2, 0, 0, 0, true);
+    }
+}
+
+// TODO delete this class for release, this is a pseudo class for mimicking the compiler output and testing
 class Player extends GameObject {
     constructor(x, y) {
         super("Player",
               "https://upload.wikimedia.org/wikipedia/en/a/a9/MarioNSMBUDeluxe.png",
-              x, y, 90, 90, 1, 0, 0, 0);
+              x, y, 90, 90, 1, 0, 0, 0, true);
         this.speed_x = 150; //150units/s
         this.speed_y = 150;
     }
@@ -241,58 +258,6 @@ class Player extends GameObject {
         }
     }
 }
-
-/*
-class Player extends HitboxAABB {
-    name;
-    image;
-    keyControl;
-    playerEl;
-
-    constructor(name, x1, y1, x2, y2, mass, vx, vy, bounce) {
-        super(x1, y1, x2, y2, mass, vx, vy, bounce);
-        this.name = name;
-        this.playerEl = document.createElement("div");
-    }
-
-    drawRect(img) {
-        this.image = img;
-        this.playerEl.classList.add("agent");
-        this.playerEl.style.height = `${this.y2 - this.y1}px`;
-        this.playerEl.style.width = `${this.x2 - this.x1}px`;
-        this.playerEl.style.backgroundImage = `url(${img})`;
-        this.playerEl.style.backgroundSize = "contain";
-        this.playerEl.style.backgroundRepeat = "no-repeat";
-        this.playerEl.style.backgroundPosition = "center";
-        canvas.appendChild(this.playerEl);
-        this.playerEl.style.position = "absolute";
-        this.playerEl.style.left = this.x1 + "px";
-        this.playerEl.style.top = this.y1 + "px";
-        requestAnimationFrame(mainLoop);
-    }
-
-    updatePosition(speed) {
-        if (LEFT && this.x1 > 0) {
-            this.move(-speed, 0);
-        }
-        if (UP && this.y1 > 0) {
-            this.move(0, -speed);
-        }
-        if (RIGHT && this.x2 < canvas.getBoundingClientRect().width - 5) {
-            this.move(speed, 0);
-        }
-        if (DOWN && this.y2 < canvas.getBoundingClientRect().height - 5) {
-            this.move(0, speed);
-        }
-    }
-
-    renderPlayer() {
-        console.log({ x1: this.x1, y1: this.y1 });
-        this.playerEl.style.left = this.x1 + "px";
-        this.playerEl.style.top = this.y1 + "px";
-    }
-}
-*/
 
 /*
 
@@ -334,6 +299,21 @@ function keyControl() {
 }
 keyControl();
 
+
+/*
+
+------------------------------------------Collision Event Functions---------------------------------
+
+ */
+
+
+const eventMap = new Map();
+
+eventMap.set("Player|Block", (object1, object2) => {
+    console.log(object1.objname, object2.objname);
+});
+
+
 /*
 
 ------------------------------------------Game Loop---------------------------------
@@ -342,6 +322,8 @@ keyControl();
 
 // all objects will be created here
 const GameObjectList = [];
+const collisionList = [];
+const deleteList = [];
 
 // timers
 let time_now = Date.now();
@@ -362,16 +344,69 @@ function runAllObjectUpdates() {
     GameObjectList.forEach(go => go.update());
 }
 
+function createCollisionList() {
+    collisionList.splice(0, collisionList.length);
+
+    for (let i = 0; i < GameObjectList.length - 1; i++) {
+        for (let j = i + 1; j < GameObjectList.length; j++) {
+            if (isCollidingAABB(GameObjectList[i].hb, GameObjectList[j].hb)) {
+                collisionList.push(new Collision(GameObjectList[i], GameObjectList[j]));
+            }
+        }
+    }
+}
+
+// TODO maybe one day optimize this?
+function callCollisionEvents() {
+    collisionList.forEach((collision) => {
+        let key = collision.go1.objname + "|" + collision.go2.objname;
+        let altKey = collision.go2.objname + "|" + collision.go1.objname;
+        if (eventMap.has(key)) {
+            eventMap.get(key)(collision.go1, collision.go2);
+        } else if (eventMap.has(altKey)) {
+            eventMap.get(altKey)(collision.go2, collision.go1);
+        }
+    });
+}
+
+function applyCollisionToAllCollidingHitboxes() {
+    collisionList.forEach((collision) => {
+        if (collision.go1.hardBodyCollision && collision.go2.hardBodyCollision === true) {
+            applyHardBodyCollisionMovementAABB(collision.go1.hb, collision.go2.hb);
+        }
+    });
+}
+
 function updateAllVisualElements() {
     GameObjectList.forEach(go => go.updateSpritePos());
 }
 
+function iterateDeleteList() {
+    deleteList.forEach((delGo) => {
+        let i = GameObjectList.indexOf(go => go === delGo);
+        if (i !== -1) {
+            GameObjectList.splice(i, 1);
+        }
+    })
+
+    deleteList.splice(0, deleteList.length);
+}
+
+function deleteGO(go) {
+    deleteList.push(go);
+}
+
 function gameLoop() {
     updateTimers();
+
+    iterateDeleteList();
     runAllObjectUpdates();
+
     applyVelocityToAllHitboxes();
-    // TODO check collision to create a list of all occuring collisions
-    // TODO apply collision for objects that have collision and are colliding
+    createCollisionList();
+    callCollisionEvents();
+    applyCollisionToAllCollidingHitboxes();
+
     updateAllVisualElements();
     requestAnimationFrame(gameLoop);
 }
@@ -383,16 +418,5 @@ function gameLoop() {
 
  */
 
-GameObjectList.push(new Player(10, 10));
+GameObjectList.push(new Player(10, 10), new Block(200, 200), new Block(300, 300));
 gameLoop();
-/*
-const player = new Player("Mario", 10, 10, 100, 100, 1, 0, 0, 0);
-player.drawRect("https://upload.wikimedia.org/wikipedia/en/a/a9/MarioNSMBUDeluxe.png");
-
-function mainLoop() {
-    player.updatePosition(3);
-    player.renderPlayer();
-
-    requestAnimationFrame(mainLoop);
-}
-*/

@@ -1,4 +1,23 @@
-# Milestone One
+### Table of Contents: 
+- [Milestone 1](#milestone-1)
+  - [Project Description](#project-description)
+  - [Feedback from TA](#feedback-from-ta)
+  - [Follow-up tasks](#follow-up-tasks)
+- [Milestone 2](#milestone-2)
+  - [Responsiblities & Roadmap](#responsiblities--roadmap)
+  - [Draft Grammar](#draft-grammar)
+  - [TA Feedback](#ta-feedback)
+  - [Progress So Far](#progress-so-far)
+- [Milestone 3](#milestone-3)
+  - [Concrete language mockup](#concrete-language-mockup)
+  - [Notes from user study](#notes-from-user-study)
+  - [Changes to language design](#changes-to-language-design)
+  - [Feedback from TA](#feedback-from-ta-1)
+  - [Progress & Roadmap](#progress--roadmap)
+      - [Progress so far](#progress-so-far-1)
+      - [Roadmap](#roadmap)
+
+# Milestone 1
 
 
 ## Project Description
@@ -32,7 +51,7 @@ Moreover, we should focus on the design of the DSL instead of game development. 
 
 
 
-# Milestone Two
+# Milestone 2
 
 
 ## Responsiblities & Roadmap
@@ -56,6 +75,8 @@ Note: These responsiblities are not set in stone, and if anyone needs help, we w
 
 ## Draft Grammar
 The following is an example game written in our planned DSL:  
+
+```
 game:  
 background: black  
 width: 300  
@@ -130,7 +151,7 @@ body:
 {  
 score = score + i;  
 };  
-
+```
 
 ## TA Feedback
  - Tasks for user study:
@@ -145,3 +166,154 @@ score = score + i;
  - Created the project
  - Started work on the lexer and parser
  - Started work on the physics and rendering side of the engine
+
+
+# Milestone 3
+
+Since the last milestone, the first user study has been conducted. As a result of that, tweaks and feature changes has been identified for the language. 
+
+## Concrete language mockup
+
+The syntax we used for the first user study is the same as the one outlined in [Milestone 2](#draft-grammar). 
+
+Each codeblock starts with one of the keywords `game`, `object`, `event`, or `function`, and ends with the `;` symbol. Inside a codeblock, each line defines an attribute of the declared keyword, and can accept primitives(number and string), arrays, and function calls. 
+
+This is an example of a game written in the DSL syntax: 
+
+<details>
+<summary>(click me)</summary>
+
+```
+game:
+background: black
+width: 300
+height: 300
+score: 30
+time: 300;
+ 
+object:
+name: player
+image: src/resources/player.png
+life: 2
+start x: 150
+start y: 300
+size x: 10
+size y: 10
+update: basicControl();
+ 
+object:
+name: apple
+number: 5
+image: src/resources/apple.png
+start x: random(5,295)
+start y: 0
+speed x: random(-1,1)
+speed y: change(2,5)
+size x: 10
+size y: 10;
+ 
+object:
+name: bomb
+number: 2
+image: src/resources/bomb.png
+start x: random(5,295)
+start y: 0
+speed y: random(2,5)
+size x: 10
+size y: 10;
+ 
+object:
+name: ground
+image: src/resources/ground.png
+start x: [0-300]
+start y: 300
+size x: 10
+size y: 10
+ 
+event:
+object1: player
+object2: apple
+actions: score(1), disappear(apple);
+ 
+event:
+object1: player
+object2: bomb
+actions: score(-5), disappear(bomb), decreaseHealth(1);
+ 
+event:
+object1: ground
+object2: apple
+actions: disappear(apple);
+ 
+event:
+object1: ground
+object2: bomb
+actions: disappear(bomb);
+ 
+function:
+name: decreaseHealth
+param: i
+body:
+{
+life = life - i;
+};
+```
+</details>
+
+
+## Notes from user study
+
+Some issues we identified from the user study: 
+
+- The user relied heavily on the provided example to set up their own game
+- The meaning of some attribute keywords were ambiguous
+- The user is often unsure which variables and functions are built-in, and which ones need to be custom-declared
+- Some syntax complaints
+  - Keyword declaration such as `object:` is too similar to attribute declaration such as `name:`
+  - Syntax for declaring an array of elements from 0 to 300 `[0-300]` is ambiguous
+
+## Changes to language design
+
+We identified the following changes to improve code comprehensibility
+
+ - For Objects, provide syntax to enable/disable collision, define mass, etc
+ - Range syntax for spawning a list of objects start x: [0-300]
+ - Attribute keyword refactorings
+   - Start x/start y -> pos x/pos y
+   - Size x/size y -> delete
+
+We also identified the following features that need to be implemented: 
+ - Syntax for instancing: 
+   - Provide a way to explicitly refer to an object instance in function definition
+   - Provide a way to spawn a specific number of an object type
+
+ - A syntax for the definition of end-conditions
+
+ - In custom function, add support for `if` statements & return values 
+
+## Feedback from TA
+
+ - Syntax for custom function definitions are within-scope and is a major feature we should consider implementing
+ - ANTLR as Javascript support, so it would be possible to call the game engine functions directly through an AST visitor. 
+
+
+## Progress & Roadmap
+
+#### Progress so far
+ - Set up project repo (09/20)
+ - Finished lexer & parser for the current syntax (09/26) *Jack, Jacqueline*
+ - Conduct the first user study (09/25) *Jingxuan*
+ - Set up basic engine  *Edmond*
+ - UI and integrated game interface (ongoing) *Tom, Jingxuan*
+
+
+#### Roadmap
+ - Set up ANTLR with javascript support (10/03)
+ - Finish the eingine & game UI (10/07 - delayed by 1 week) *Edmond Tom Jingxuan*
+ - Conduct second user study with prototype (10/11) *Jack, Jingxuan*
+ - Integrate compiler and game (before 10/14) *All*
+ - Debugging(before 10/17) *Edmond*
+ - Do the second user study(method & time currently unknown) *Jingxuan/Jack*
+ - Write video script (before 10/17) *Edmond/Jack*
+ - Record video with voiceover (before 10/17) *Tom*
+ - Edit video(before 10/17) *Tom*
