@@ -41,13 +41,13 @@ function_param:FUNCTION_PARAM IDENTIFIER (COMMA IDENTIFIER)*;
 function_body:FUNCTION_BODY block END_OF_LINE;
 
 block: BODY_START line* BODY_END;
-line: statement | ifBlock | whileBlock;
-statement: (assignment|funCall|return) END_OF_LINE;
-ifBlock:IF LPAREN expression RPAREN block (ELSE elseIfBlock);
-elseIfBlock: block | ifBlock;
-whileBlock: WHILE LPAREN  expression RPAREN block;
-assignment: IDENTIFIER ASSIGN expression;
-expression: expression (BOOL_OP|COMPARE_OP) expression| BOOL | IDENTIFIER| INTEGER |funCall | expression (ADD|MINUS|MULTIOP)
+line: statement | ifBlock ;
+statement: assignment|funCall;
+ifBlock:(IDENTIFIER ASSIGN)? IF LPAREN expression COMMA expression (COMMA expression)? RPAREN;
+object_attribute: Identifier PERIOD Identifier;
+/*whileBlock: WHILE LPAREN  expression RPAREN block;*/
+assignment: IDENTIFIER|object_attribute ASSIGN expression;
+expression: expression (BOOL_OP|COMPARE_OP) expression| BOOL | IDENTIFIER| object_attribute|INTEGER |funCall | expression (ADD|MINUS|MULTIOP)
 expression|MINUS expression|SQ_LPAREN expression expression SQ_RPAREN|NOT expression;
-return:RETURN expression;
+/*return:RETURN expression;*/
 funCall: IDENTIFIER (LPAREN expression (COMMA expression)* RPAREN|LPAREN RPAREN);
