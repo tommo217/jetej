@@ -1,3 +1,4 @@
+# How to compile ANTLR to JavaScript
 
 1. Install [ANTLR tool](https://github.com/antlr/antlr4/blob/master/doc/getting-started.md)
     
