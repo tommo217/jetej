@@ -153,12 +153,6 @@ function random(arg1, arg2) {
  */
 
 
-// TODO put this in a class maybe? Or not, this is fine too
-let LEFT = false;
-let RIGHT = false;
-let UP = false;
-let DOWN = false;
-
 const canvas = document.querySelector(".game-frame");
 
 class GameObject {
@@ -181,58 +175,73 @@ class GameObject {
     }
 }
 
+
 /*
 
 ---------------------------------Input Watching-------------------------
 
  */
 
-// keyControl() is copied from https://github.com/danielszabo88/mocorgo by user danielszabo88
+
+let keyMap = new Map();
+
+// keyControl() is originally copied from https://github.com/danielszabo88/mocorgo by user danielszabo88
+// modified by Edmond to use maps instead
 function keyControl() {
     canvas.addEventListener("keydown", function (e) {
-        if (e.keyCode === 37) {
-            LEFT = true;
-        }
-        if (e.keyCode === 38) {
-            UP = true;
-        }
-        if (e.keyCode === 39) {
-            RIGHT = true;
-        }
-        if (e.keyCode === 40) {
-            DOWN = true;
-        }
+        keyMap.set(e.code, true);
     });
 
     canvas.addEventListener("keyup", function (e) {
-        if (e.keyCode === 37) {
-            LEFT = false;
-        }
-        if (e.keyCode === 38) {
-            UP = false;
-        }
-        if (e.keyCode === 39) {
-            RIGHT = false;
-        }
-        if (e.keyCode === 40) {
-            DOWN = false;
-        }
+        keyMap.set(e.code, false);
     });
 }
+
 keyControl();
+
+function isPressed(keycode) {
+    let state = keyMap.get(keycode);
+    if (state === undefined) {
+        keyMap.set(keycode, false);
+        state = false;
+    }
+    return state;
+}
+
 
 /*
 
-------------------------------------------Collision Event Functions---------------------------------
+---------------------------------Basic Controls-------------------------
 
  */
 
 
-const eventMap = new Map();
+function basicControls(go, speed_x, speed_y) {
+    let LEFT = isPressed("ArrowLeft") || isPressed("KeyA");
+    let RIGHT = isPressed("ArrowRight") || isPressed("KeyD");
+    let UP = isPressed("ArrowUp") || isPressed("KeyW");
+    let DOWN = isPressed("ArrowDown") || isPressed("KeyS");
 
-eventMap.set("Player|Block", (object1, object2) => {
-    console.log(object1.objname, object2.objname);
-});
+    if (LEFT !== RIGHT) {
+        if (LEFT === true) {
+            go.hb.vx = -speed_x;
+        } else if (RIGHT === true) {
+            go.hb.vx = speed_x;
+        }
+    } else {
+        go.hb.vx = 0;
+    }
+    if (UP !== DOWN) {
+        if (UP === true) {
+            go.hb.vy = -speed_y
+        } else if (DOWN === true) {
+            go.hb.vy = speed_y
+        }
+    } else {
+        go.hb.vy = 0;
+    }
+}
+
 
 /*
 
@@ -441,25 +450,7 @@ class Player extends GameObject {
     }
 
     update() {
-        // TODO make this more abstract?
-        if (LEFT !== RIGHT) {
-            if (LEFT === true) {
-                this.hb.vx = -this.speed_x;
-            } else if (RIGHT === true) {
-                this.hb.vx = this.speed_x;
-            }
-        } else {
-            this.hb.vx = 0;
-        }
-        if (UP !== DOWN) {
-            if (UP === true) {
-                this.hb.vy = -this.speed_y
-            } else if (DOWN === true) {
-                this.hb.vy = this.speed_y
-            }
-        } else {
-            this.hb.vy = 0;
-        }
+        basicControls(this, this.speed_x, this.speed_y);
     }
 }
 
