@@ -18,6 +18,6 @@ export default class ObjectNode extends Node {
   }
 
   accept(context, visitor) {
-    visitor.visitObject(context, this);
+    return visitor.visitObject(context, this);
   }
 }

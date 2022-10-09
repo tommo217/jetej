@@ -6,6 +6,6 @@ export default class ProgramNode extends Node {
   }
 
   accept(context, visitor) {
-    visitor.visitProgram(context, this);
+    return visitor.visitProgram(context, this);
   }
 }

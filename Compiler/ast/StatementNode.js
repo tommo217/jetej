@@ -6,11 +6,6 @@ export default class StatementNode extends Node {
   }
 
   accept(context, visitor) {
-    if(line instanceof AssignNode) {
-        visitor.visitAssign(context, statement)
-    }
-    if(line instanceof FunCallNode) {
-        visitor.visitFunCall(context, statement)
-    }
+    return visitor.visitStatement(context, this);
   }
 }

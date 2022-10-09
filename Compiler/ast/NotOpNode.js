@@ -6,6 +6,6 @@ export default class NotOpNode extends Node {
   }
 
   accept(context, visitor) {
-    visitor.visitNotOp(context, this);
+    return visitor.visitNotOp(context, this);
   }
 }

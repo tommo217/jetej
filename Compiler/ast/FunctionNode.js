@@ -8,6 +8,6 @@ export default class FunctionNode extends Node {
   }
 
   accept(context, visitor) {
-    visitor.visitFunc(context, this);
+    return visitor.visitFunc(context, this);
   }
 }

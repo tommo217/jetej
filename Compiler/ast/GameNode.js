@@ -10,6 +10,6 @@ export default class GameNode extends Node {
   }
 
   accept(context, visitor) {
-    visitor.visitGame(context, this);
+    return visitor.visitGame(context, this);
   }
 }

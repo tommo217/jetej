@@ -6,6 +6,6 @@ export default class BlockNode extends Node {
   }
 
   accept(context, visitor) {
-    visitor.visitBlock(context, this);
+    return visitor.visitBlock(context, this);
   }
 }

@@ -8,6 +8,6 @@ export default class OperatorNode extends Node {
   }
 
   accept(context, visitor) {
-    visitor.visitOperator(context, this);
+    return visitor.visitOperator(context, this);
   }
 }

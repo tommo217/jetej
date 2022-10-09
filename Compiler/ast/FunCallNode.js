@@ -7,6 +7,6 @@ export default class FunCallNode extends Node {
   }
 
   accept(context, visitor) {
-    visitor.visitFunCall(context, this);
+    return visitor.visitFunCall(context, this);
   }
 }

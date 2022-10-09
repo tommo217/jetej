@@ -6,6 +6,6 @@ export default class NegativeOpNode extends Node {
   }
 
   accept(context, visitor) {
-    visitor.visitNegativeOp(context, this);
+    return visitor.visitNegativeOp(context, this);
   }
 }

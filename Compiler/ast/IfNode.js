@@ -8,6 +8,6 @@ export default class IfNode extends Node {
   }
 
   accept(context, visitor) {
-    visitor.visitIfNode(context, this);
+    return visitor.visitIfNode(context, this);
   }
 }
