@@ -12,7 +12,7 @@
 2. Compile lexer and parser into JavaScript
 
     ```bash
-    > antlr4 -Dlanguage=JavaScript JetejLexer.g4 JetejParser.g4 -visitor -o ./gen 
+    > antlr4 -Dlanguage=JavaScript JetejLexer.g4 JetejParser.g4 -visitor -o ../gen 
     ```
     - change the last argument to change output directory
 
