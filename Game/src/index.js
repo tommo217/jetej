@@ -155,6 +155,8 @@ function random(arg1, arg2) {
 
 const canvas = document.querySelector(".game-frame");
 
+const errorMessage = document.querySelector(".error-message");
+
 class GameObject {
     constructor(name, sprite_url, x, y, size_x, size_y, mass, vx, vy, bounce, hardBodyCollision) {
         // these two should be statics, but I don't think that works properly in .js
@@ -258,6 +260,24 @@ let imageList = [
   {name: "triangle", source: "images/triangle.png"},
 ];
 
+const displayError = (message) => {
+    errorMessage.textContent = message;
+    errorMessage.classList.remove("hide");
+    errorMessage.classList.remove("fade-out");
+    setTimeout(() => {
+        errorMessage.classList.add("fade-out");
+    }, 1000)
+    setTimeout(() => {
+        errorMessage.textContent = "";
+        errorMessage.classList.add("hide");
+    }, 4000)
+}
+
+const getImage = (name) => {
+    const foundImage = imageList.find(image => image.name === name);
+    return foundImage.source;
+}
+
 const updateImages = () => {
   imageContainer.textContent = "";
   imageList.forEach(image => {
@@ -300,13 +320,11 @@ const handleImageChange = (e) => {
   const imageName = imageFile.name.split(".")[0].split(" ")[0];
   const ALLOWED_TYPES = ['image/png', 'image/jpeg', 'image/jpg'];
   if (!imageFile || !ALLOWED_TYPES.includes(imageFile.type)) {
-    // TODO: Error message
-    console.log('Please upload a png, jpeg or jpg file');
+    displayError('Please upload a png, jpeg or jpg file')
     return;
   }
   if (imageList.some(image => image.name === imageName)) {
-    // TODO: Error message
-    console.log('Images should have unique names');
+    displayError('Images should have unique names')
     return;
   }
   let reader = new FileReader();
@@ -453,7 +471,7 @@ class Block extends GameObject {
 class Player extends GameObject {
     constructor(x, y) {
         super("Player",
-            "https://upload.wikimedia.org/wikipedia/en/a/a9/MarioNSMBUDeluxe.png",
+            getImage("circle"),
             x, y, 90, 90, 1, 0, 0, 0, true);
         this.speed_x = 150; //150units/s
         this.speed_y = 150;
