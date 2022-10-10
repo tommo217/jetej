@@ -258,6 +258,7 @@ let imageList = [
   {name: "hexagon", source: "images/hexagon.png"},
   {name: "square", source: "images/square.png"},
   {name: "triangle", source: "images/triangle.png"},
+  {name: "background", source: "images/background.jpg"},
 ];
 
 const displayError = (message) => {
@@ -275,7 +276,7 @@ const displayError = (message) => {
 
 const getImage = (name) => {
     const foundImage = imageList.find(image => image.name === name);
-    return foundImage.source;
+    return foundImage?.source;
 }
 
 const updateImages = () => {
@@ -292,6 +293,15 @@ const removeImage = (e) => {
   const imageName = imageDiv.querySelector("p").textContent;
   imageList = imageList.filter(image => image.name !== imageName);
   updateImages();
+}
+
+const applyBackground = (name) => {
+    const source = getImage(name);
+    if (source) {
+        canvas.style.backgroundImage = `url(${source})`;
+    } else {
+        canvas.style.backgroundColor = name;
+    }
 }
 
 const createImage = (imageName, imageSource) => {
@@ -340,7 +350,7 @@ const handleImageChange = (e) => {
 fileInput.addEventListener('change', handleImageChange);
 
 updateImages();
-
+applyBackground("background");
 /*
 
 ------------------------------------------Game Loop---------------------------------
