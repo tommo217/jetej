@@ -1,0 +1,44 @@
+<game>
+background: black
+width: 300
+height: 300
+score: 30
+time: 300
+init: spawn(1,2,3);
+ 
+<object>
+name: player
+image: src/resources/player.png
+life: 2
+speed x:100
+speed y:random(0,200)
+mass:100
+bounce:200
+have collision:true
+update: basicControl();
+ 
+<object>
+name: apple
+life: 5
+
+image: src/resources/apple.png
+
+speed x: random(-1,1)
+speed y: change(2,5)
+;
+<event>
+object1: player
+object2: apple
+actions: score(1), disappear(apple);
+
+<function>
+name: dosomething
+param: i, x, y
+body:
+{   
+    
+    if(x>y, apple.ss=-1+4, return1())  //if should be syntaxed like a func, but we actually run an if loop
+    if(bar and x, spawn(player, x, y)) //if bar is > 1, then spawns 1 player at (x,y)
+};
+
+
