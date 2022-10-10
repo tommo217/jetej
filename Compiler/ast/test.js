@@ -8,12 +8,12 @@ class JeteCompiler {
     parseCode(){
         var content= "";
         fs.readFile('compiler/input.txt', function (err, data) {
-            console.log("read");
+
             if (err) {
                 return console.error(err);
             }
             content = data.toString();
-            console.log(content);
+
             const chars = new antlr4.InputStream(content);
             const lexer = new JetejLexer(chars);
             const tokens = new antlr4.CommonTokenStream(lexer);
@@ -21,13 +21,8 @@ class JeteCompiler {
             const visitor = new parserTreetoAST();
             const parsedProgram = visitor.visitProgram(parser.program());
         });
-        
-        try{
-            console.log("dsfkd"+content);
-            }
-        catch(error){
-            console.error();
-        }
+
+
         
         
     }
