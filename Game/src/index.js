@@ -267,7 +267,7 @@ const displayError = (message) => {
     errorMessage.classList.remove("fade-out");
     setTimeout(() => {
         errorMessage.classList.add("fade-out");
-    }, 1000)
+    }, 3000)
     setTimeout(() => {
         errorMessage.textContent = "";
         errorMessage.classList.add("hide");
