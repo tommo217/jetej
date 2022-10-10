@@ -1,7 +1,9 @@
-import Node from "./Node";
+import Node from "./Node.js";
 
 export default class NegativeOpNode extends Node {
-  constructor(exp) {
+  constructor(negative,exp) {
+    super();
+    this.negative = negative;
     this.exp = exp;
   }
 

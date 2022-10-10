@@ -1,7 +1,8 @@
-import Node from "./Node";
+import Node from "./Node.js";
 
 export default class IfNode extends Node {
   constructor(condition, ifTrue, ifFalse) {
+    super();
     this.condition = condition;
     this.ifTrue = ifTrue;
     this.ifFalse = ifFalse;

@@ -1,7 +1,9 @@
-import Node from "./Node";
+import Node from "./Node.js";
 
 export default class NotOpNode extends Node {
-  constructor(exp) {
+  constructor(not,exp) {
+    super();
+    this.not = not;
     this.exp = exp;
   }
 

@@ -1,7 +1,8 @@
-import Node from "./Node";
+import Node from "./Node.js";
 
 export default class ExpNode extends Node {
   constructor(exp) {
+    super();
     this.exp = exp;
   }
 

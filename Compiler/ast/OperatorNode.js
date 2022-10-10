@@ -1,7 +1,8 @@
-import Node from "./Node";
+import Node from "./Node.js";
 
 export default class OperatorNode extends Node {
   constructor(lExp, rExp, operator) {
+    super();
     this.lExp = lExp;
     this.rExp = rExp;
     this.operator = operator;
