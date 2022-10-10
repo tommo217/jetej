@@ -406,6 +406,16 @@ function deleteGO(go) {
     deleteList.push(go);
 }
 
+function clearGO() {
+    GameObjectList.splice(0, GameObjectList.length);
+    deleteList.splice(0, deleteList.length);
+}
+
+function spawn(className, x, y) {
+    let go = eval(`new ${className}(${x}, ${y})`);
+    GameObjectList.push(go);
+}
+
 function gameLoop() {
     updateTimers();
 
@@ -461,6 +471,7 @@ eventMap.set("Player|Block", (object1, object2) => {
 
 // TODO example spawning objects, delete for release
 GameObjectList.push(new Player(10, 10), new Block(200, 200), new Block(300, 300));
+spawn("Block", 150, 150);
 
 // start game loop
 gameLoop();
