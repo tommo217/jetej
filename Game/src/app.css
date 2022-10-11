@@ -12,6 +12,7 @@ body {
   margin: auto;
   width: min(90%, 1200px);
   height: 100vh;
+  position: relative;
 }
 
 .grid-container {
@@ -58,8 +59,8 @@ h3, p {
 }
 
 .game-frame {
-  width: 60%;
-  aspect-ratio: 1 / 1;
+  width: 90%;
+  aspect-ratio: 5 / 3;
   background-color: wheat;
   border: 2px solid rgba(0, 0, 0, 0.6);
   position: relative;
@@ -159,4 +160,27 @@ input[type="file"] {
   border: none;
   border-radius: 0.3em;
   cursor: pointer;
+}
+
+.error-message {
+  position: absolute;
+  bottom: 1em;
+  left: 50%;
+  transform: translate(-50%, 0);
+  padding: 1em;
+  border-radius: 0.3em;
+  color: darkred;
+  font-weight: bold;
+  font-size: large;
+  background-color: rgb(255, 255, 255, 0.8);
+}
+
+.hide {
+  z-index: -1;
+  display: none;
+}
+
+.fade-out {
+  transition: all 1s;
+  opacity: 0;
 }

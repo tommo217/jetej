@@ -153,13 +153,9 @@ function random(arg1, arg2) {
  */
 
 
-// TODO put this in a class maybe? Or not, this is fine too
-let LEFT = false;
-let RIGHT = false;
-let UP = false;
-let DOWN = false;
-
 const canvas = document.querySelector(".game-frame");
+
+const errorMessage = document.querySelector(".error-message");
 
 class GameObject {
     constructor(name, sprite_url, x, y, size_x, size_y, mass, vx, vy, bounce, hardBodyCollision) {
@@ -181,58 +177,73 @@ class GameObject {
     }
 }
 
+
 /*
 
 ---------------------------------Input Watching-------------------------
 
  */
 
-// keyControl() is copied from https://github.com/danielszabo88/mocorgo by user danielszabo88
+
+let keyMap = new Map();
+
+// keyControl() is originally copied from https://github.com/danielszabo88/mocorgo by user danielszabo88
+// modified by Edmond to use maps instead
 function keyControl() {
     canvas.addEventListener("keydown", function (e) {
-        if (e.keyCode === 37) {
-            LEFT = true;
-        }
-        if (e.keyCode === 38) {
-            UP = true;
-        }
-        if (e.keyCode === 39) {
-            RIGHT = true;
-        }
-        if (e.keyCode === 40) {
-            DOWN = true;
-        }
+        keyMap.set(e.code, true);
     });
 
     canvas.addEventListener("keyup", function (e) {
-        if (e.keyCode === 37) {
-            LEFT = false;
-        }
-        if (e.keyCode === 38) {
-            UP = false;
-        }
-        if (e.keyCode === 39) {
-            RIGHT = false;
-        }
-        if (e.keyCode === 40) {
-            DOWN = false;
-        }
+        keyMap.set(e.code, false);
     });
 }
+
 keyControl();
+
+function isPressed(keycode) {
+    let state = keyMap.get(keycode);
+    if (state === undefined) {
+        keyMap.set(keycode, false);
+        state = false;
+    }
+    return state;
+}
+
 
 /*
 
-------------------------------------------Collision Event Functions---------------------------------
+---------------------------------Basic Controls-------------------------
 
  */
 
 
-const eventMap = new Map();
+function basicControls(go, speed_x, speed_y) {
+    let LEFT = isPressed("ArrowLeft") || isPressed("KeyA");
+    let RIGHT = isPressed("ArrowRight") || isPressed("KeyD");
+    let UP = isPressed("ArrowUp") || isPressed("KeyW");
+    let DOWN = isPressed("ArrowDown") || isPressed("KeyS");
 
-eventMap.set("Player|Block", (object1, object2) => {
-    console.log(object1.objname, object2.objname);
-});
+    if (LEFT !== RIGHT) {
+        if (LEFT === true) {
+            go.hb.vx = -speed_x;
+        } else if (RIGHT === true) {
+            go.hb.vx = speed_x;
+        }
+    } else {
+        go.hb.vx = 0;
+    }
+    if (UP !== DOWN) {
+        if (UP === true) {
+            go.hb.vy = -speed_y
+        } else if (DOWN === true) {
+            go.hb.vy = speed_y
+        }
+    } else {
+        go.hb.vy = 0;
+    }
+}
+
 
 /*
 
@@ -248,6 +259,24 @@ let imageList = [
   {name: "square", source: "images/square.png"},
   {name: "triangle", source: "images/triangle.png"},
 ];
+
+const displayError = (message) => {
+    errorMessage.textContent = message;
+    errorMessage.classList.remove("hide");
+    errorMessage.classList.remove("fade-out");
+    setTimeout(() => {
+        errorMessage.classList.add("fade-out");
+    }, 1000)
+    setTimeout(() => {
+        errorMessage.textContent = "";
+        errorMessage.classList.add("hide");
+    }, 4000)
+}
+
+const getImage = (name) => {
+    const foundImage = imageList.find(image => image.name === name);
+    return foundImage.source;
+}
 
 const updateImages = () => {
   imageContainer.textContent = "";
@@ -291,13 +320,11 @@ const handleImageChange = (e) => {
   const imageName = imageFile.name.split(".")[0].split(" ")[0];
   const ALLOWED_TYPES = ['image/png', 'image/jpeg', 'image/jpg'];
   if (!imageFile || !ALLOWED_TYPES.includes(imageFile.type)) {
-    // TODO: Error message
-    console.log('Please upload a png, jpeg or jpg file');
+    displayError('Please upload a png, jpeg or jpg file')
     return;
   }
   if (imageList.some(image => image.name === imageName)) {
-    // TODO: Error message
-    console.log('Images should have unique names');
+    displayError('Images should have unique names')
     return;
   }
   let reader = new FileReader();
@@ -397,6 +424,16 @@ function deleteGO(go) {
     deleteList.push(go);
 }
 
+function clearGO() {
+    GameObjectList.splice(0, GameObjectList.length);
+    deleteList.splice(0, deleteList.length);
+}
+
+function spawn(className, x, y) {
+    let go = eval(`new ${className}(${x}, ${y})`);
+    GameObjectList.push(go);
+}
+
 function gameLoop() {
     updateTimers();
 
@@ -434,32 +471,14 @@ class Block extends GameObject {
 class Player extends GameObject {
     constructor(x, y) {
         super("Player",
-            "https://upload.wikimedia.org/wikipedia/en/a/a9/MarioNSMBUDeluxe.png",
+            getImage("circle"),
             x, y, 90, 90, 1, 0, 0, 0, true);
         this.speed_x = 150; //150units/s
         this.speed_y = 150;
     }
 
     update() {
-        // TODO make this more abstract?
-        if (LEFT !== RIGHT) {
-            if (LEFT === true) {
-                this.hb.vx = -this.speed_x;
-            } else if (RIGHT === true) {
-                this.hb.vx = this.speed_x;
-            }
-        } else {
-            this.hb.vx = 0;
-        }
-        if (UP !== DOWN) {
-            if (UP === true) {
-                this.hb.vy = -this.speed_y
-            } else if (DOWN === true) {
-                this.hb.vy = this.speed_y
-            }
-        } else {
-            this.hb.vy = 0;
-        }
+        basicControls(this, this.speed_x, this.speed_y);
     }
 }
 
@@ -470,6 +489,7 @@ eventMap.set("Player|Block", (object1, object2) => {
 
 // TODO example spawning objects, delete for release
 GameObjectList.push(new Player(10, 10), new Block(200, 200), new Block(300, 300));
+spawn("Block", 150, 150);
 
 // start game loop
 gameLoop();
