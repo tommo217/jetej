@@ -1,7 +1,8 @@
-import Node from "./Node";
+import Node from "./Node.js";
 
 export default class AttributeNode extends Node {
   constructor(className, field) {
+     super();
     this.className = className;
     this.field = field;
   }

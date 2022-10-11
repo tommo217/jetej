@@ -1,8 +1,9 @@
-import Node from "./Node";
+import Node from "./Node.js";
 
 export default class LineNode extends Node {
   constructor(line) {
-    this.line = line;
+     super();
+     this.line = line;
   }
 
   accept(context, visitor) {

@@ -1,6 +1,6 @@
 import Node from "./Node.js";
 
-export default class LineNode extends Node {
+export default class AssignNode extends Node {
   constructor(id, value) {
     super();
     this.id = id;

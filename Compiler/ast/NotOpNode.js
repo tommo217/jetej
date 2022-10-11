@@ -1,9 +1,9 @@
 import Node from "./Node.js";
 
 export default class NotOpNode extends Node {
-  constructor(not,exp) {
+  constructor(exp) {
     super();
-    this.not = not;
+
     this.exp = exp;
   }
 
