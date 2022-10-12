@@ -430,7 +430,10 @@ function clearGO() {
 }
 
 function spawn(className, x, y) {
-    let go = eval(`new ${className}(${x}, ${y})`);
+    // MDN docs suggested this alternative to eval
+    // src: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval#never_use_eval!
+    const fn = Function(`"use strict"; return new ${className}(${x}, ${y})`);
+    let go = fn();
     GameObjectList.push(go);
 }
 
@@ -463,7 +466,7 @@ class Block extends GameObject {
     constructor(x, y) {
         super("Block",
             "../rsrc/black_rectangle.png",
-            x, y, 90, 90, 2, 0, 0, 0, true);
+            x, y, 50, 50, 2, 0, 0, 0, true);
     }
 }
 
@@ -472,13 +475,13 @@ class Player extends GameObject {
     constructor(x, y) {
         super("Player",
             getImage("circle"),
-            x, y, 90, 90, 1, 0, 0, 0, true);
+            x, y, 50, 50, 1, 0, 0, 0, true);
         this.speed_x = 150; //150units/s
         this.speed_y = 150;
     }
 
     update() {
-        basicControls(this, this.speed_x, this.speed_y);
+        basicControls(this); 
     }
 }
 
@@ -489,7 +492,52 @@ eventMap.set("Player|Block", (object1, object2) => {
 
 // TODO example spawning objects, delete for release
 GameObjectList.push(new Player(10, 10), new Block(200, 200), new Block(300, 300));
-spawn("Block", 150, 150);
+spawn("Block", 150, 150); 
 
 // start game loop
 gameLoop();
+
+
+/*
+
+------------------------------------------Inject Generated Code to Browser--------------------------------
+
+ */
+
+// const str = 
+// `
+// class Block extends GameObject {
+//     constructor(x, y) {
+//         super("Block",
+//             "../rsrc/black_rectangle.png",
+//             x, y, 90, 90, 2, 0, 0, 0, true);
+//     }
+// }
+
+// class Player extends GameObject {
+//     constructor(x, y) {
+//         super("Player",
+//             getImage("circle"),
+//             x, y, 90, 90, 1, 0, 0, 0, true);
+//         this.speed_x = 150; //150units/s
+//         this.speed_y = 150;
+//     }
+
+//     update() {
+//         basicControls(this, this.speed_x, this.speed_y);
+//     }
+// }
+
+// eventMap.set("Player|Block", (object1, object2) => {
+//     console.log(object1.objname, object2.objname);
+// });
+
+// GameObjectList.push(new Player(10, 10), new Block(200, 200), new Block(300, 300));
+// spawn("Block", 150, 150);
+// gameLoop();
+// `;
+
+// let script = document.createElement('script')
+// script.type = "text/javascript";
+// script.text = str;
+// document.body.appendChild(script);
