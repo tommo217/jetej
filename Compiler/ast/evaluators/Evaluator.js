@@ -4,7 +4,7 @@ export default class Evaluator {
   identifiers = new Set();
   // function signatures
   functionSigs = new Map()
-  .set('basicControls', new Set([0]))
+  .set('basicControls', new Set([0, 2, 3]))
   .set('spawn', new Set([3]))
   .set('disappear', new Set([1]))
   .set('random', new Set([2])); 
@@ -170,7 +170,7 @@ export default class Evaluator {
   }
 
   visitParenExpression(errrors, parenNode) {
-    const exp = notOP.exp.accept(errors, this);
+    const exp = parenNode.exp.accept(errors, this);
     if (errors.length) { return; }
     return `(${exp})`;
   }
@@ -209,7 +209,9 @@ export default class Evaluator {
     switch(fun){
       // write special cases here
       case 'basicControls':
-        return ['this']
+        return ['this'];
+      case 'spawn':
+        return [`"${p[0]}"`].concat(p.slice(1))
       default:
         return p; 
     }

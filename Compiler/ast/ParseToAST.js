@@ -155,7 +155,6 @@ export default class parserTreetoAST extends JetejParserVisitor{
 
       }
 
-      // TODO: create AttributeNode here
       // Visit a parse tree produced by JetejParser#object_attribute.
       visitObject_attribute(ctx) {
         return this.visitChildren(ctx);
