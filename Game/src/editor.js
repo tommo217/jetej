@@ -1,15 +1,14 @@
 var editorContent = '\/\/ Start writing your game...  '
 
-const keywords=['game:', 'object:', 'event:', 'function:'];
+const keywords=[`<game>`, '<object>', '<event>', '<function>'];
 const languageDef = {
-  keywords, 
+  keywords: keywords, 
   tokenizer: {
     root: [
-      [/[a-zA-Z ]+:/, {
-        cases: {
-          '@keywords': 'keyword',
-          '@default': 'variable',
-        }
+      [/[a-zA-Z0-9 ]+:/, 'variable'],
+      [/<[a-zA-Z]+>/, {cases: { 
+        '@keywords': 'keyword', 
+        '@default': 'invalid',}
       }],
       [/".*?"/, 'string'],
       [/\/\/.*/, 'comment'],
@@ -27,7 +26,9 @@ const languageTheme = {
   base: "vs",
   inherit: true,
   rules: [
-    { token: 'keyword', foreground: '#FF6600', fontStyle: 'bold'}
+    { token: 'keyword', foreground: '#FF6600', fontStyle: 'bold'},
+    { token: 'variable', fontStyle: 'italic'},
+    { token: 'invalid', foreground: '#D0342C'}
   ]
 }
 
@@ -43,7 +44,7 @@ function configLanguage () {
 
 function createEditor () {
   configLanguage()
-  monaco.editor.create(document.getElementById('code-block'), {
+  window.monacoEditor = monaco.editor.create(document.getElementById('code-block'), {
     value: editorContent,
     language: 'jetej',
     theme: 'jetejTheme',
