@@ -177,6 +177,70 @@ class GameObject {
     }
 }
 
+/*
+
+----------------------------Displayed Game Variables--------------------------
+
+ */
+
+const topBar = document.querySelector(".top-bar");
+
+const gameVariables = {
+    score: null,
+    health: null,
+    time: null
+}
+
+const capitalize = (str) => {
+    return str.replace(str[0], str[0].toUpperCase())
+}
+
+const checkParameters = (variableName, value) => {
+    const validVariableNames = Object.keys(gameVariables);
+    if (!validVariableNames.includes(variableName)) {
+        displayError(`${variableName} is not a valid property`);
+        return false;
+    }
+    if (typeof value !== "number") {
+        displayError(`The value must be a number`);
+        return false;
+    }
+    return true;
+}
+
+const initializeVariable = (variableName, value = 0) => {
+    if (!checkParameters(variableName, value)) return;
+
+    gameVariables[variableName] = value;
+    const variableSpan = document.createElement("span");
+    const valueToDisplay = variableName === "time" ? formatTime(value) : value;
+    variableSpan.textContent = `${capitalize(variableName)}: ${valueToDisplay}`;
+    topBar.append(variableSpan);    
+}
+
+const formatTime = (timeInSecond) => {
+    const minutes = Math.floor(timeInSecond / 60);
+    const seconds = timeInSecond % 60;
+    return `${minutes}:${seconds < 10 ? "0" + seconds : seconds}`;
+}
+
+const updateVariable = (variableName, value) => {
+    if (!checkParameters(variableName, value)) return;
+    if (gameVariables[variableName] === null) return;
+
+    const varaibleElements = Array.from(topBar.children);
+    const elementToUpdate = varaibleElements.find(el => el.textContent.split(":")[0] === capitalize(variableName));
+    const valueToDisplay = variableName === "time" ? formatTime(value) : value;
+    elementToUpdate.textContent = `${capitalize(variableName)}: ${valueToDisplay}`;
+}
+
+initializeVariable("score", 0)
+
+initializeVariable("health", 2)
+updateVariable("health", 3)
+
+initializeVariable("time", 200)
+
 
 /*
 
