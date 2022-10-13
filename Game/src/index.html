@@ -31,13 +31,14 @@
           <div class="code-container">
             <!-- <textarea class="code-block"></textarea> -->
             <div id="code-block"></div>
-            <button class="run-button">Run</button>
+            <button class="run-button" onclick="compileAndRun()">Run</button>
           </div>
         </div>
       </div>
       <div class="error-message hide"></div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.26.1/min/vs/loader.min.js"></script>
+    <script src="../dist/compiler.js"></script>
     <script src="editor.js"></script>
     <script src="index.js"></script>
   </body>
