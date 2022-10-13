@@ -16,7 +16,7 @@ function parse(content) {
   return visitor.visitProgram(parser.program());
 }
 
-function compile(content) {
+export function compile(content) {
   const parsedProgram = parse(content)
   const evaluator = new Evaluator();
   const errorBuilder = []; 
@@ -34,5 +34,3 @@ function compile(content) {
     compileError: compileErr,
   };
 }
-
-export default compile;

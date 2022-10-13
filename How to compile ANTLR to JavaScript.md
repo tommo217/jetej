@@ -25,7 +25,9 @@
     > npx webpack
     ```
 
-    Compiled code is located at `./Game/dist/`
+    Webpack config file is located at `./webpack.config.cjs`.
+    
+    Compiled code is located at `./Game/dist/`  
 
 ### Related Documentations
  - [ANTLR4 JavasScript Documentation](https://github.com/antlr/antlr4/blob/master/doc/javascript-target.md)
