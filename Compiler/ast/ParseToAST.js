@@ -155,7 +155,6 @@ export default class parserTreetoAST extends JetejParserVisitor{
 
       }
 
-
       // Visit a parse tree produced by JetejParser#object_attribute.
       visitObject_attribute(ctx) {
         return this.visitChildren(ctx);
@@ -268,7 +267,7 @@ export default class parserTreetoAST extends JetejParserVisitor{
       visitNotExpression(ctx) {
 
         let exp = ctx.expression().accept(this);
-        let notExp = new NotExpNode(exp);
+        let notExp = new NotOpNode(exp);
         return new ExpNode(notExp);
       }
 

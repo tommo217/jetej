@@ -218,7 +218,7 @@ function isPressed(keycode) {
  */
 
 
-function basicControls(go, speed_x, speed_y) {
+function basicControls(go, speed_x=go.speed_x, speed_y=go.speed_y) {
     let LEFT = isPressed("ArrowLeft") || isPressed("KeyA");
     let RIGHT = isPressed("ArrowRight") || isPressed("KeyD");
     let UP = isPressed("ArrowUp") || isPressed("KeyW");
@@ -440,7 +440,10 @@ function clearGO() {
 }
 
 function spawn(className, x, y) {
-    let go = eval(`new ${className}(${x}, ${y})`);
+    // MDN docs suggested this alternative to eval
+    // src: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval#never_use_eval!
+    const fn = Function(`"use strict"; return new ${className}(${x}, ${y})`);
+    let go = fn();
     GameObjectList.push(go);
 }
 
@@ -468,38 +471,97 @@ function gameLoop() {
 
 // class defs
 
-// TODO delete this class for release, this is a pseudo class for mimicking the compiler output and testing
-class Block extends GameObject {
-    constructor(x, y) {
-        super("Block",
-            "../rsrc/black_rectangle.png",
-            x, y, 90, 90, 2, 0, 0, 0, true);
-    }
-}
+// // TODO delete this class for release, this is a pseudo class for mimicking the compiler output and testing
+// class Block extends GameObject {
+//     constructor(x, y) {
+//         super("Block",
+//             "../rsrc/black_rectangle.png",
+//             x, y, 50, 50, 2, 0, 0, 0, true);
+//     }
+// }
 
-// TODO delete this class for release, this is a pseudo class for mimicking the compiler output and testing
+// // TODO delete this class for release, this is a pseudo class for mimicking the compiler output and testing
+// class Player extends GameObject {
+//     constructor(x, y) {
+//         super("Player",
+//             getImage("circle"),
+//             x, y, 50, 50, 1, 0, 0, 0, true);
+//         this.speed_x = 150; //150units/s
+//         this.speed_y = 150;
+//     }
+
+//     update() {
+//         basicControls(this); 
+//     }
+// }
+
+// // TODO this is an example of an event collision function, delete for release
+// eventMap.set("Player|Block", (object1, object2) => {
+//     console.log(object1.objname, object2.objname);
+// });
+
+// // TODO example spawning objects, delete for release
+// GameObjectList.push(new Player(10, 10), new Block(200, 200), new Block(300, 300));
+// spawn(Block, 150, 150); 
+
+// // start game loop
+// gameLoop();
+
+
+/*
+
+------------------------------------------Inject Generated Code to Browser--------------------------------
+
+ */
+
+const generated = 
+`
 class Player extends GameObject {
     constructor(x, y) {
         super("Player",
             getImage("circle"),
-            x, y, 90, 90, 1, 0, 0, 0, true);
-        this.speed_x = 150; //150units/s
-        this.speed_y = 150;
+            x, y, 50, 50, 1, 0, 0, 0, true);
+        this.life = 2; this.speed_x = 100; this.speed_y = 100;
     }
 
     update() {
-        basicControls(this, this.speed_x, this.speed_y);
+        basicControls(this);
     }
-}
+  }
+  class Box extends GameObject {
+    constructor(x, y) {
+        super("Box",
+            getImage("square"),
+            x, y, 50, 50, 1, 0, 0, 10, true);
 
-// TODO this is an example of an event collision function, delete for release
-eventMap.set("Player|Block", (object1, object2) => {
-    console.log(object1.objname, object2.objname);
-});
+    }
 
-// TODO example spawning objects, delete for release
-GameObjectList.push(new Player(10, 10), new Block(200, 200), new Block(300, 300));
-spawn("Block", 150, 150);
+    update() {
 
-// start game loop
+    }
+  }
+  class Hex extends GameObject {
+    constructor(x, y) {
+        super("Hex",
+            getImage("hexagon"),
+            x, y, 50, 50, 1, 0, 0, 0, true);
+
+    }
+
+    update() {
+
+    }
+  }
+  eventMap.set("Player|Box", (object1, object2) => {
+    spawn(Hex,150,150);
+  });
+  spawn(Player,50,50);spawn(Box,200,0);
+`
+
+
+
+let script = document.createElement('script')
+script.type = "text/javascript";
+script.text = generated;
+document.body.appendChild(script);
 gameLoop();
