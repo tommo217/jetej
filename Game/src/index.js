@@ -123,7 +123,6 @@ class Sprite {
     updateSpritePosition(x, y) {
         const ratio = canvas.getBoundingClientRect().width / 500;
         
-        console.log({sprite_url: this.sprite_url, x, y});
         this.objElement.style.left = x * ratio + "px";
         this.objElement.style.top = y * ratio + "px";
     }
