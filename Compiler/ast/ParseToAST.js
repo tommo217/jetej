@@ -68,8 +68,8 @@ export default class parserTreetoAST extends JetejParserVisitor{
         if(ctx.object_speed_y(0)!=null)speed_y = ctx.object_speed_y(0).expression().accept(this);
         if(ctx.object_size_x(0)!=null)width = ctx.object_size_x(0).expression().accept(this);
         if(ctx.object_size_y(0)!=null)height = ctx.object_size_y(0).expression().accept(this);
-        if(ctx.object_mass(0)!=null)mass = parseInt(ctx.object_mass(0).INTEGER().getText());
-        if(ctx.object_bounce(0)!=null)bounce = parseInt(ctx.object_bounce(0).INTEGER().getText());
+        if(ctx.object_mass(0)!=null)mass = ctx.object_mass(0).expression().accept(this);
+        if(ctx.object_bounce(0)!=null)bounce = ctx.object_bounce(0).expression().accept(this);
         if(ctx.object_collision(0)!=null)isCollision  = ctx.object_collision(0).BOOL().getText();
         if(ctx.object_update(0)!=null){
             ctx.object_update(0).funCall().forEach(element => {
@@ -119,9 +119,11 @@ export default class parserTreetoAST extends JetejParserVisitor{
       // Visit a parse tree produced by JetejParser#function_param.
       visitFunction_param(ctx) {
         let params = [];
+        if(ctx.IDENTIFIER()!=null){
         ctx.IDENTIFIER().forEach(element => {
             params.push(element.getText());
         });
+      }
         return params;
       }
 

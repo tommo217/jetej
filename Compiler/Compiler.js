@@ -13,11 +13,20 @@ function parse(content) {
   const parser = new JetejParser(tokens);
   const visitor = new parserTreetoAST();
   // TODO: how to report parse error
-  return visitor.visitProgram(parser.program());
+  parser.removeErrorListeners();
+  let parseError = ``;
+  parser.addErrorListener({
+  syntaxError: (recognizer, offendingSymbol, line, column, msg, err) => {
+    parseError+=` line ${line}, col ${column}: ${msg}\n`;
+   
+  }
+});
+  
+  return [visitor.visitProgram(parser.program()),parseError];
 }
 
 export function compile(content) {
-  const parsedProgram = parse(content)
+  const [parsedProgram,parseError] = parse(content);
   const evaluator = new Evaluator();
   const errorBuilder = []; 
   const script = parsedProgram.accept(errorBuilder, evaluator);
@@ -27,10 +36,12 @@ export function compile(content) {
       compileErr += `${msg}\n`
     }
   }
+
   console.log(`Output script: \n ${script}`)
   return {
     result: script, 
     parseError: ``,
     compileError: compileErr,
+    parseError:parseError
   };
 }
