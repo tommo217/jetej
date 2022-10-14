@@ -97,12 +97,13 @@ function applyHardBodyCollisionMovementAABB(hb1, hb2) {
 
 // this class is used to store code used for rendering things to html
 class Sprite {
-    constructor(sprite_url, width, height) {
+    constructor(sprite_url, width, height, id) {
         this.sprite_url = sprite_url;
         this.width = width;
         this.height = height;
 
         this.objElement = document.createElement("div");
+        this.objElement.id = id;
 
         this.objElement.style.height = `${width}px`;
         this.objElement.style.width = `${height}px`;
@@ -157,11 +158,19 @@ const canvas = document.querySelector(".game-frame");
 
 const errorMessage = document.querySelector(".error-message");
 
+function uuidv4() {
+    return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+      (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+    );
+}
+
 class GameObject {
     constructor(name, sprite_url, x, y, size_x, size_y, mass, vx, vy, bounce, hardBodyCollision) {
         // these two should be statics, but I don't think that works properly in .js
         this.objname = name; // by convention this should be equal to the name of the class
-        this.sprite = new Sprite(sprite_url, size_x, size_y);
+        const id = uuidv4();
+        this.sprite = new Sprite(sprite_url, size_x, size_y, id);
+        this.id = id;
         this.hb = new HitboxAABB(x, y, x + size_x, y + size_y, mass, vx, vy, bounce);
         this.hardBodyCollision = hardBodyCollision;
 
@@ -210,6 +219,7 @@ const checkParameters = (variableName, value) => {
 
 const initializeVariable = (variableName, value = 0) => {
     if (!checkParameters(variableName, value)) return;
+    if (gameVariables[variableName] !== null) return;
 
     gameVariables[variableName] = value;
     const variableSpan = document.createElement("span");
@@ -224,20 +234,27 @@ const formatTime = (timeInSecond) => {
     return `${minutes}:${seconds < 10 ? "0" + seconds : seconds}`;
 }
 
-const updateVariable = (variableName, value) => {
+const updateVariableTo = (variableName, value) => {
     if (!checkParameters(variableName, value)) return;
     if (gameVariables[variableName] === null) return;
 
+    gameVariables[variableName] = value;
     const varaibleElements = Array.from(topBar.children);
     const elementToUpdate = varaibleElements.find(el => el.textContent.split(":")[0] === capitalize(variableName));
     const valueToDisplay = variableName === "time" ? formatTime(value) : value;
     elementToUpdate.textContent = `${capitalize(variableName)}: ${valueToDisplay}`;
 }
 
+const updateVariableBy = (variableName, changeAmount) => {
+    updateVariableTo(variableName, gameVariables[variableName] + changeAmount);
+}    
+
+// Tests to be deleted
 initializeVariable("score", 0)
+updateVariableTo("score", 5);
 
 initializeVariable("health", 2)
-updateVariable("health", 3)
+updateVariableBy("health", -1)
 
 initializeVariable("time", 200)
 
@@ -473,6 +490,15 @@ function callCollisionEvents() {
 
 function applyCollisionToAllCollidingHitboxes() {
     collisionList.forEach((collision) => {
+        console.log({collision})
+        if (collision.go1.objname === "Hex" && collision.go2.objname !== "Hex") {
+            console.log("should delete")
+            clearGO();
+        }
+        if (collision.go2.objname === "Hex" && collision.go1.objname !== "Hex") {
+            console.log("should delete")
+            clearGO();
+        }
         if (collision.go1.hardBodyCollision && collision.go2.hardBodyCollision === true) {
             applyHardBodyCollisionMovementAABB(collision.go1.hb, collision.go2.hb);
         }
@@ -485,7 +511,8 @@ function updateAllVisualElements() {
 
 function iterateDeleteList() {
     deleteList.forEach((delGo) => {
-        let i = GameObjectList.indexOf(go => go === delGo);
+        console.log({delGo})
+        let i = GameObjectList.findIndex(go => go.id === delGo.id);
         if (i !== -1) {
             GameObjectList.splice(i, 1);
         }
@@ -495,10 +522,19 @@ function iterateDeleteList() {
 }
 
 function deleteGO(go) {
+    const objectElements = Array.from(canvas.children);
+    const elementToDelete = objectElements.find(el => el.id === go.id);
+    elementToDelete.remove();
     deleteList.push(go);
 }
 
 function clearGO() {
+    const objectElements = Array.from(canvas.children);
+    objectElements.forEach(el => {
+        if (!el.classList.contains("top-bar")) {
+            el.remove();
+        }
+    })
     GameObjectList.splice(0, GameObjectList.length);
     deleteList.splice(0, deleteList.length);
 }
@@ -524,6 +560,7 @@ function gameLoop() {
 
     updateAllVisualElements();
     requestAnimationFrame(gameLoop);
+    // console.log({GameObjectList})
 }
 
 
@@ -590,6 +627,7 @@ function runGame(jsString) {
     script.text = jsString;
     document.body.appendChild(script);
     gameLoop();
+    console.log({GameObjectList})
 }
 
 function compileAndRun() {
