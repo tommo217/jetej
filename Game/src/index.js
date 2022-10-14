@@ -105,8 +105,10 @@ class Sprite {
         this.objElement = document.createElement("div");
         this.objElement.id = id;
 
-        this.objElement.style.height = `${height}px`;
-        this.objElement.style.width = `${width}px`;
+        const ratio = canvas.getBoundingClientRect().width / 500;
+
+        this.objElement.style.height = `${height * ratio}px`;
+        this.objElement.style.width = `${width * ratio}px`;
         this.objElement.style.backgroundImage = `url(${sprite_url})`;
         this.objElement.style.backgroundSize = "cover";
         this.objElement.style.backgroundRepeat = "no-repeat";
@@ -119,8 +121,10 @@ class Sprite {
 
     // updates the top left position of the sprite's object element
     updateSpritePosition(x, y) {
-        this.objElement.style.left = x + "px";
-        this.objElement.style.top = y + "px";
+        const ratio = canvas.getBoundingClientRect().width / 500;
+        
+        this.objElement.style.left = x * ratio + "px";
+        this.objElement.style.top = y * ratio + "px";
     }
 }
 
@@ -368,6 +372,7 @@ let imageList = [
   {name: "square", source: "images/square.png"},
   {name: "triangle", source: "images/triangle.png"},
   {name: "background", source: "images/background.jpg"},
+  {name: "transparent", source: "images/transparent.png"},
 ];
 
 const displayError = (message) => {
