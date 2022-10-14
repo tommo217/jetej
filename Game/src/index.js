@@ -158,6 +158,8 @@ const canvas = document.querySelector(".game-frame");
 
 const errorMessage = document.querySelector(".error-message");
 
+let isGameOn = true;
+
 function uuidv4() {
     return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
       (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
@@ -270,14 +272,18 @@ let keyMap = new Map();
 
 // keyControl() is originally copied from https://github.com/danielszabo88/mocorgo by user danielszabo88
 // modified by Edmond to use maps instead
-function keyControl() {
-    canvas.addEventListener("keydown", function (e) {
-        keyMap.set(e.code, true);
-    });
 
-    canvas.addEventListener("keyup", function (e) {
-        keyMap.set(e.code, false);
-    });
+function handleKeyDown(e) {
+    keyMap.set(e.code, true);
+}
+
+function handleKeyUp(e) {
+    keyMap.set(e.code, false);
+}
+
+function keyControl() {
+    canvas.addEventListener("keydown", handleKeyDown);
+    canvas.addEventListener("keyup", handleKeyUp);
 }
 
 keyControl();
@@ -432,6 +438,50 @@ fileInput.addEventListener('change', handleImageChange);
 
 updateImages();
 applyBackground("background");
+
+/*
+
+------------------------------------------Game Over---------------------------------
+
+ */
+
+const createModal = () => {
+    const overlay = document.createElement("div");
+    overlay.classList.add("overlay");
+    canvas.appendChild(overlay);
+
+    const modal = document.createElement("div");
+    modal.classList.add("modal");
+    canvas.appendChild(modal);
+
+    const gameOverDiv = document.createElement("div");
+    gameOverDiv.classList.add("game-over");
+    gameOverDiv.textContent = "game over"
+    modal.appendChild(gameOverDiv);
+
+    return modal;
+}
+
+const endGame = (win) => {
+    const message = win ? "You win!" : "You lose!"
+
+    return () => {
+        isGameOn = false;
+
+        canvas.removeEventListener("keydown", handleKeyDown);
+        canvas.removeEventListener("keyup", handleKeyUp);
+
+        const modal = createModal();
+        const resultDiv = document.createElement("div");
+        resultDiv.classList.add("result-message");
+        resultDiv.textContent = message;
+        modal.appendChild(resultDiv);
+    }
+}
+
+const winGame = endGame(true);
+const loseGame = endGame(false);
+
 /*
 
 ------------------------------------------Game Loop---------------------------------
@@ -549,7 +599,9 @@ function gameLoop() {
     applyCollisionToAllCollidingHitboxes();
 
     updateAllVisualElements();
-    requestAnimationFrame(gameLoop);
+    if (isGameOn) {
+        requestAnimationFrame(gameLoop);
+    }
 }
 
 
