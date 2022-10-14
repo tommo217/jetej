@@ -25,16 +25,20 @@ export default class Evaluator {
   };
 
   visitGame(errors, gameNode) {
-    // FEATURE: require engine code that edits bg, height, width, and score
+    const background = gameNode.background !== null ? `applyBackground("${gameNode.background}");` : ``;
     
+    // TODO: static check: add corresponding identifiers
+    const score = gameNode.score !== null ? `initializeVariable("score", ${gameNode.score}); `: ``;
+
     let initCalls = ``;
     for (const fnCall of gameNode.init) {
       initCalls += `${fnCall.accept(errors, this)};`;
       if (errors.length) { return; }
     }
 
-    this.gameScripts = `
-    ${initCalls}
+    this.gameScripts = 
+    `
+    ${initCalls} ${background} ${score}
     `
     return ``;
   }
@@ -44,16 +48,18 @@ export default class Evaluator {
     // Constructor params
     let name = objNode.name; // TODO: check for nulls and invalids (existing names, etc)
     let image = objNode.image; // TODO: check for nulls and invalids
-    let sizeX = objNode.width !== null ? objNode.width.accept(errors, this) : 50;
-    let sizeY = objNode.height !== null ? objNode.height.accept(errors, this) : 50;
+    let sizeX = objNode.width !== null ? objNode.width.accept(errors, this) : 30;
+    let sizeY = objNode.height !== null ? objNode.height.accept(errors, this) : 30;
     let mass = objNode.mass !== null ? objNode.mass : 1;
+    let vx = objNode.speed_x ? `${objNode.speed_x.accept(errors, this)}` : `0`;
+    let vy = objNode.speed_y ? `${objNode.speed_y.accept(errors, this)}` : `0`;
     let bounce = objNode.bounce !== null ? objNode.bounce : 0;
     let collision = objNode.isCollision !== null ? objNode.isCollision : true;
 
     // Additional fields
-    let speed_x = objNode.speed_x ? `this.speed_x = ${objNode.speed_x.accept(errors, this)};` : ``;
-    let speed_y = objNode.speed_y ? `this.speed_y = ${objNode.speed_y.accept(errors, this)};` : ``;
     let life = objNode.life ? `this.life = ${objNode.life};` : ``;
+    let speed_x = objNode.speed_x ? `this.speed_x = ${objNode.speed_x.accept(errors, this)}; ` : ``;
+    let speed_y = objNode.speed_y ? `this.speed_y = ${objNode.speed_y.accept(errors, this)}; ` : ``;
 
     if (errors.length) { return; }
 
@@ -70,7 +76,7 @@ export default class Evaluator {
       constructor(x, y) {
           super("${name}",
               getImage("${image}"),
-              x, y, ${sizeX}, ${sizeY}, ${mass}, 0, 0, ${bounce}, ${collision});
+              x, y, ${sizeX}, ${sizeY}, ${mass}, ${vx}, ${vy}, ${bounce}, ${collision});
           ${life} ${speed_x} ${speed_y}
       }
   
@@ -189,10 +195,17 @@ export default class Evaluator {
   }
 
   visitOperator(errors, opNode) {
-    const lExp = opNode.lExp.accept(errors, this); 
-    const rExp = opNode.rExp.accept(errors, this); 
+    const lExp = (
+      typeof opNode.lExp == 'string' ?
+      opNode.lExp :
+      opNode.lExp.accept(errors, this)
+    ); 
+    const rExp = (
+      typeof opNode.rExp == 'string' ?
+      opNode.rExp :
+      opNode.rExp.accept(errors, this)
+    ); 
     if (errors.length) { return; }
-
     return `${lExp} ${opNode.operator.toString()} ${rExp}`
   }
 
@@ -214,7 +227,7 @@ export default class Evaluator {
       if (errors.length) { return; }
       params.push(str);
     }
-    return `${funCall.name}(${this.paramMap(funCall.name, params)})`
+    return `${this.funCallMap(funCall.name)}(${this.paramMap(funCall.name, params)})`
   }
 
   // Helper, map parameter to actual javascript parameters
@@ -222,12 +235,31 @@ export default class Evaluator {
     switch(fun){
       // write special cases here
       case 'basicControls':
+        return ['this', '150', '150'];
+      case 'directionControls':
         return ['this'];
       case 'spawn':
         return [`"${p[0]}"`].concat(p.slice(1))
+      case 'score':
+        return [`"score"`, p[0]]
       default:
         return p; 
     }
   }
+
+  // Helper, map JETEJ function names to in-engine function names
+  funCallMap(fun) {
+    switch(fun) {
+      case 'delete': 
+      case 'destroy': 
+        return `deleteGO`;
+      // TODO: static check for score attribute? 
+      case 'score':
+        return `updateVariableBy`;
+      default: 
+        return fun;
+    }
+  }
+
 
 }
