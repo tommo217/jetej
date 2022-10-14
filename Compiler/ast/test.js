@@ -4,6 +4,7 @@ import JetejParser from '../gen/JetejParser.js';
 import parserTreetoAST from './ParseToAST.js';
 import * as fs from 'fs';
 import Evaluator from './evaluators/Evaluator.js';
+import compile from '../Compiler.js';
 
 class JeteCompiler {
     parseCode(){
@@ -30,6 +31,8 @@ class JeteCompiler {
             } else {
                 console.log(`Output script: \n ${script}`)
             }
+            
+            // compile(content);
         });
         
     }

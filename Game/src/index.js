@@ -574,58 +574,37 @@ function gameLoop() {
 
 /*
 
-------------------------------------------Inject Generated Code to Browser--------------------------------
+-------------------------------Call Compiler & Run Generated Code--------------------------------
 
  */
 
-const generated = 
-`
-class Player extends GameObject {
-    constructor(x, y) {
-        super("Player",
-            getImage("circle"),
-            x, y, 50, 50, 1, 0, 0, 0, true);
-        this.life = 2; this.speed_x = 100; this.speed_y = 100;
+function resetGame() {
+    // TODO: reset game instance
+}
+
+function runGame(jsString) {
+    const script = document.createElement('script')
+    script.id="game-script"
+    script.type = "text/javascript";
+    
+    script.text = jsString;
+    document.body.appendChild(script);
+    gameLoop();
+}
+
+function compileAndRun() {
+    const input = window.monacoEditor.getValue();
+    const output = Compiler.compile(input);
+
+    // TODO: better error code
+    if (output.parseError) {
+        window.alert(`Parse Error: \n ${output.parseError}`);
+    } else if(output.compilerError) {
+        window.alert(`Compiler Error: \n ${output.parseError}`); 
     }
-
-    update() {
-        basicControls(this);
+    else {
+        console.log(output.result);
+        // resetGame()
+        runGame(output.result);
     }
-  }
-  class Box extends GameObject {
-    constructor(x, y) {
-        super("Box",
-            getImage("square"),
-            x, y, 50, 50, 1, 0, 0, 10, true);
-
-    }
-
-    update() {
-
-    }
-  }
-  class Hex extends GameObject {
-    constructor(x, y) {
-        super("Hex",
-            getImage("hexagon"),
-            x, y, 50, 50, 1, 0, 0, 0, true);
-
-    }
-
-    update() {
-
-    }
-  }
-  eventMap.set("Player|Box", (object1, object2) => {
-    spawn(Hex,150,150);
-  });
-  spawn(Player,50,50);spawn(Box,200,0);
-`
-
-
-
-let script = document.createElement('script')
-script.type = "text/javascript";
-script.text = generated;
-document.body.appendChild(script);
-gameLoop();
+}

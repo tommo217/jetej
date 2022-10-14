@@ -10,12 +10,24 @@
    - requires python3 and Java version >= 11
 
 2. Compile lexer and parser into JavaScript
-
+   
     ```bash
     > antlr4 -Dlanguage=JavaScript JetejLexer.g4 JetejParser.g4 -visitor -o ../gen 
     ```
     - change the last argument to change output directory
 
+3. Output compiler to Game script
+   
+   At project root: 
+   
+   ```bash
+    > npm install
+    > npx webpack
+    ```
+
+    Webpack config file is located at `./webpack.config.cjs`.
+    
+    Compiled code is located at `./Game/dist/`  
 
 ### Related Documentations
  - [ANTLR4 JavasScript Documentation](https://github.com/antlr/antlr4/blob/master/doc/javascript-target.md)
