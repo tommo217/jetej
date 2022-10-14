@@ -490,15 +490,6 @@ function callCollisionEvents() {
 
 function applyCollisionToAllCollidingHitboxes() {
     collisionList.forEach((collision) => {
-        console.log({collision})
-        if (collision.go1.objname === "Hex" && collision.go2.objname !== "Hex") {
-            console.log("should delete")
-            clearGO();
-        }
-        if (collision.go2.objname === "Hex" && collision.go1.objname !== "Hex") {
-            console.log("should delete")
-            clearGO();
-        }
         if (collision.go1.hardBodyCollision && collision.go2.hardBodyCollision === true) {
             applyHardBodyCollisionMovementAABB(collision.go1.hb, collision.go2.hb);
         }
@@ -511,7 +502,9 @@ function updateAllVisualElements() {
 
 function iterateDeleteList() {
     deleteList.forEach((delGo) => {
-        console.log({delGo})
+        const objectElements = Array.from(canvas.children);
+        const elementToDelete = objectElements.find(el => el.id === delGo.id);
+        elementToDelete.remove();
         let i = GameObjectList.findIndex(go => go.id === delGo.id);
         if (i !== -1) {
             GameObjectList.splice(i, 1);
@@ -522,9 +515,6 @@ function iterateDeleteList() {
 }
 
 function deleteGO(go) {
-    const objectElements = Array.from(canvas.children);
-    const elementToDelete = objectElements.find(el => el.id === go.id);
-    elementToDelete.remove();
     deleteList.push(go);
 }
 
@@ -560,7 +550,6 @@ function gameLoop() {
 
     updateAllVisualElements();
     requestAnimationFrame(gameLoop);
-    // console.log({GameObjectList})
 }
 
 
@@ -627,7 +616,6 @@ function runGame(jsString) {
     script.text = jsString;
     document.body.appendChild(script);
     gameLoop();
-    console.log({GameObjectList})
 }
 
 function compileAndRun() {
