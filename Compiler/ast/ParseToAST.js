@@ -12,6 +12,7 @@ import BlockNode from "./BlockNode.js"
 import FunctionNode from "./FunctionNode.js";
 import AssignNode from "./AssignNode.js";
 import parenExpNode from "./ParenExpNode.js";
+import AttributeNode from "./AttributeNode.js";
 export default class parserTreetoAST extends JetejParserVisitor{
     // Visit a parse tree produced by JetejParser#program.
 	visitProgram(ctx) {
@@ -157,7 +158,7 @@ export default class parserTreetoAST extends JetejParserVisitor{
 
       // Visit a parse tree produced by JetejParser#object_attribute.
       visitObject_attribute(ctx) {
-        return this.visitChildren(ctx);
+        return new AttributeNode(ctx.IDENTIFIER(0).getText(), ctx.IDENTIFIER(1).getText())
       }
 
 
@@ -196,7 +197,7 @@ export default class parserTreetoAST extends JetejParserVisitor{
         if(ctx.IDENTIFIER()!=null){
             id = ctx.IDENTIFIER().getText();
         }else if(ctx.object_attribute()!=null){
-            id = ctx.object_attribute().getText();
+            id = ctx.object_attribute().accept(this);
         }
         let exp = ctx.expression().accept(this);
         return new AssignNode(id,exp);
@@ -306,7 +307,10 @@ export default class parserTreetoAST extends JetejParserVisitor{
         return new ExpNode(opnode);
       }
 
-
+      // Visit a parse tree produced by JetejParser#object_attributeExpression.
+      visitObject_attributeExpression(ctx) {
+      	  return new ExpNode(ctx.object_attribute().accept(this));
+      }
 
 
       // Visit a parse tree produced by JetejParser#booleanExpression.

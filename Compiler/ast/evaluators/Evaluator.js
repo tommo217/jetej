@@ -125,10 +125,15 @@ export default class Evaluator {
 
   visitAssign(errors, assignNode) {
     // TODO: static check for the existence of identifier
+    const id = (
+      typeof assignNode.id == 'string' ?
+      assignNode.id :
+      assignNode.id.accept(errors, this)
+    ); 
     const value = assignNode.value.accept(errors, this);
     if (errors.length) { return; }
 
-    return `${assignNode.id} = ${value}`
+    return `${id} = ${value}`
   }
 
   visitIfNode(errors, ifNode) {
@@ -146,8 +151,8 @@ export default class Evaluator {
       return exp.toString();
     }
     else if (typeof exp == 'string') {
-      // FIXME: IDENTIFIER or object_attribute or constant
-      // TODO: static check: validity of identifier & obj_attribute
+      // this is an IDENTIFIER
+      // TODO: static check: validity of identifier
       return exp;
     }
     else if (typeof exp == 'boolean') {
@@ -155,6 +160,14 @@ export default class Evaluator {
     }
 
     return exp.accept(errors, this);
+  }
+
+  visitAttribute(errors, attrNode) {
+    if (attrNode.className === 'game') {
+      return `gameVariables["${attrNode.field}"]`;
+    }
+    // TODO: static check: validity of className
+    return `${attrNode.className}.${attrNode.field}`;
   }
 
   visitNegativeOp(errors, negativeOp) {
