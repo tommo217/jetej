@@ -490,15 +490,6 @@ function callCollisionEvents() {
 
 function applyCollisionToAllCollidingHitboxes() {
     collisionList.forEach((collision) => {
-        console.log({collision})
-        if (collision.go1.objname === "Hex" && collision.go2.objname !== "Hex") {
-            console.log("should delete")
-            clearGO();
-        }
-        if (collision.go2.objname === "Hex" && collision.go1.objname !== "Hex") {
-            console.log("should delete")
-            clearGO();
-        }
         if (collision.go1.hardBodyCollision && collision.go2.hardBodyCollision === true) {
             applyHardBodyCollisionMovementAABB(collision.go1.hb, collision.go2.hb);
         }
@@ -627,7 +618,6 @@ function runGame(jsString) {
     script.text = jsString;
     document.body.appendChild(script);
     gameLoop();
-    console.log({GameObjectList})
 }
 
 function compileAndRun() {
