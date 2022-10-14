@@ -256,13 +256,13 @@ const updateVariableBy = (variableName, changeAmount) => {
 }    
 
 // Tests to be deleted
-initializeVariable("score", 0)
-updateVariableTo("score", 5);
+// initializeVariable("score", 0)
+// updateVariableTo("score", 5);
 
-initializeVariable("health", 2)
-updateVariableBy("health", -1)
+// initializeVariable("health", 2)
+// updateVariableBy("health", -1)
 
-initializeVariable("time", 200)
+// initializeVariable("time", 200)
 
 
 /*
@@ -332,6 +332,28 @@ function basicControls(go, speed_x=go.speed_x, speed_y=go.speed_y) {
         }
     } else {
         go.hb.vy = 0;
+    }
+}
+
+function directionControls(go) {
+    let LEFT = isPressed("ArrowLeft") || isPressed("KeyA");
+    let RIGHT = isPressed("ArrowRight") || isPressed("KeyD");
+    let UP = isPressed("ArrowUp") || isPressed("KeyW");
+    let DOWN = isPressed("ArrowDown") || isPressed("KeyS");
+
+    const speedx = go.speed_x || 0;
+    const speedy = go.soeed_y || 0;
+    // TOFIX: hacky way of maintainting minimum speed
+    const velocity = Math.max(Math.sqrt(speedx*speedx + speedy*speedy), 15); 
+
+    if (LEFT | RIGHT | UP | DOWN)  {
+        go.hb.vx = 0;
+        go.hb.vy = 0;
+        if (LEFT) { go.hb.vx = -velocity; }
+        if (RIGHT) { go.hb.vx = velocity; }
+        if (UP) { go.hb.vy = -velocity }
+        if (DOWN) { go.hb.vy = velocity }
+        console.log(`Changed direction at v = ${velocity}`)
     }
 }
 
@@ -442,7 +464,7 @@ const handleImageChange = (e) => {
 fileInput.addEventListener('change', handleImageChange);
 
 updateImages();
-applyBackground("background");
+// applyBackground("background");
 
 /*
 
