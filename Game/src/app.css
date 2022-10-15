@@ -66,6 +66,7 @@ h3, p {
   background-position: center;
   border: 2px solid rgba(0, 0, 0, 0.6);
   position: relative;
+  overflow: hidden;
 }
 
 .top-bar {

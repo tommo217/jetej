@@ -94,6 +94,17 @@ function applyHardBodyCollisionMovementAABB(hb1, hb2) {
 
  */
 
+let ratio = canvas.getBoundingClientRect().width / 500;
+
+window.addEventListener("resize", () => {
+    ratio = canvas.getBoundingClientRect().width / 500;
+    GameObjectList.forEach(item => {
+        console.log({itemstyle: item})
+        item.sprite.objElement.style.height = `${item.sprite.height * ratio}px`;
+        item.sprite.objElement.style.width = `${item.sprite.width * ratio}px`;
+    })
+})
+
 
 // this class is used to store code used for rendering things to html
 class Sprite {
@@ -104,8 +115,6 @@ class Sprite {
 
         this.objElement = document.createElement("div");
         this.objElement.id = id;
-
-        const ratio = canvas.getBoundingClientRect().width / 500;
 
         this.objElement.style.height = `${height * ratio}px`;
         this.objElement.style.width = `${width * ratio}px`;
@@ -120,9 +129,7 @@ class Sprite {
     }
 
     // updates the top left position of the sprite's object element
-    updateSpritePosition(x, y) {
-        const ratio = canvas.getBoundingClientRect().width / 500;
-        
+    updateSpritePosition(x, y) {       
         this.objElement.style.left = x * ratio + "px";
         this.objElement.style.top = y * ratio + "px";
     }
@@ -156,9 +163,6 @@ function random(arg1, arg2) {
 ----------------------------Main--------------------------
 
  */
-
-
-const canvas = document.querySelector(".game-frame");
 
 const errorMessage = document.querySelector(".error-message");
 
@@ -713,3 +717,5 @@ function compileAndRun() {
         runGame(output.result);
     }
 }
+
+runButton.addEventListener("click", compileAndRun)
