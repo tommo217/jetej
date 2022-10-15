@@ -4,7 +4,7 @@ import antlr4 from 'antlr4';
 import JetejParserListener from './JetejParserListener.js';
 import JetejParserVisitor from './JetejParserVisitor.js';
 
-const serializedATN = [4,1,51,310,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,
+const serializedATN = [4,1,51,312,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,
 4,2,5,7,5,2,6,7,6,2,7,7,7,2,8,7,8,2,9,7,9,2,10,7,10,2,11,7,11,2,12,7,12,
 2,13,7,13,2,14,7,14,2,15,7,15,2,16,7,16,2,17,7,17,2,18,7,18,2,19,7,19,2,
 20,7,20,2,21,7,21,2,22,7,22,2,23,7,23,2,24,7,24,2,25,7,25,2,26,7,26,2,27,
@@ -19,86 +19,87 @@ const serializedATN = [4,1,51,310,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,
 1,19,1,19,1,19,1,20,1,20,1,20,1,20,1,20,1,20,1,21,1,21,1,21,1,22,1,22,1,
 22,1,23,1,23,1,23,1,23,5,23,196,8,23,10,23,12,23,199,9,23,1,24,1,24,1,24,
 3,24,204,8,24,1,24,1,24,1,25,1,25,1,25,1,25,5,25,212,8,25,10,25,12,25,215,
-9,25,1,26,1,26,1,26,1,26,1,27,1,27,1,28,1,28,5,28,225,8,28,10,28,12,28,228,
-9,28,1,28,1,28,1,29,1,29,3,29,234,8,29,1,30,1,30,1,30,1,30,1,31,1,31,3,31,
-242,8,31,1,32,1,32,1,32,1,32,1,32,1,32,1,32,3,32,251,8,32,1,32,1,32,1,33,
-1,33,3,33,257,8,33,1,33,1,33,1,33,1,34,1,34,1,34,1,34,1,34,1,34,1,34,1,34,
-1,34,1,34,1,34,1,34,1,34,3,34,275,8,34,1,34,1,34,1,34,1,34,1,34,1,34,1,34,
-1,34,1,34,1,34,1,34,1,34,5,34,289,8,34,10,34,12,34,292,9,34,1,35,1,35,1,
-35,1,35,1,35,5,35,299,8,35,10,35,12,35,302,9,35,1,35,1,35,1,35,1,35,3,35,
-308,8,35,1,35,0,1,68,36,0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,
-36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,0,2,1,0,28,29,1,0,
-40,41,314,0,72,1,0,0,0,2,83,1,0,0,0,4,86,1,0,0,0,6,100,1,0,0,0,8,119,1,0,
-0,0,10,122,1,0,0,0,12,125,1,0,0,0,14,128,1,0,0,0,16,131,1,0,0,0,18,134,1,
-0,0,0,20,143,1,0,0,0,22,146,1,0,0,0,24,149,1,0,0,0,26,152,1,0,0,0,28,155,
-1,0,0,0,30,158,1,0,0,0,32,161,1,0,0,0,34,170,1,0,0,0,36,173,1,0,0,0,38,176,
-1,0,0,0,40,179,1,0,0,0,42,185,1,0,0,0,44,188,1,0,0,0,46,191,1,0,0,0,48,200,
-1,0,0,0,50,207,1,0,0,0,52,216,1,0,0,0,54,220,1,0,0,0,56,222,1,0,0,0,58,233,
-1,0,0,0,60,235,1,0,0,0,62,241,1,0,0,0,64,243,1,0,0,0,66,256,1,0,0,0,68,274,
-1,0,0,0,70,293,1,0,0,0,72,78,3,4,2,0,73,77,3,6,3,0,74,77,3,40,20,0,75,77,
-3,48,24,0,76,73,1,0,0,0,76,74,1,0,0,0,76,75,1,0,0,0,77,80,1,0,0,0,78,76,
-1,0,0,0,78,79,1,0,0,0,79,81,1,0,0,0,80,78,1,0,0,0,81,82,5,0,0,1,82,1,1,0,
-0,0,83,84,5,1,0,0,84,85,5,47,0,0,85,3,1,0,0,0,86,95,5,4,0,0,87,94,3,8,4,
-0,88,94,3,10,5,0,89,94,3,12,6,0,90,94,3,14,7,0,91,94,3,16,8,0,92,94,3,18,
-9,0,93,87,1,0,0,0,93,88,1,0,0,0,93,89,1,0,0,0,93,90,1,0,0,0,93,91,1,0,0,
-0,93,92,1,0,0,0,94,97,1,0,0,0,95,93,1,0,0,0,95,96,1,0,0,0,96,98,1,0,0,0,
-97,95,1,0,0,0,98,99,5,30,0,0,99,5,1,0,0,0,100,101,5,9,0,0,101,114,3,2,1,
-0,102,113,3,20,10,0,103,113,3,22,11,0,104,113,3,24,12,0,105,113,3,26,13,
-0,106,113,3,28,14,0,107,113,3,30,15,0,108,113,3,32,16,0,109,113,3,34,17,
-0,110,113,3,36,18,0,111,113,3,38,19,0,112,102,1,0,0,0,112,103,1,0,0,0,112,
-104,1,0,0,0,112,105,1,0,0,0,112,106,1,0,0,0,112,107,1,0,0,0,112,108,1,0,
-0,0,112,109,1,0,0,0,112,110,1,0,0,0,112,111,1,0,0,0,113,116,1,0,0,0,114,
-112,1,0,0,0,114,115,1,0,0,0,115,117,1,0,0,0,116,114,1,0,0,0,117,118,5,30,
-0,0,118,7,1,0,0,0,119,120,5,5,0,0,120,121,5,47,0,0,121,9,1,0,0,0,122,123,
-5,2,0,0,123,124,5,28,0,0,124,11,1,0,0,0,125,126,5,3,0,0,126,127,5,28,0,0,
-127,13,1,0,0,0,128,129,5,6,0,0,129,130,5,28,0,0,130,15,1,0,0,0,131,132,5,
-7,0,0,132,133,5,28,0,0,133,17,1,0,0,0,134,135,5,8,0,0,135,140,3,70,35,0,
-136,137,5,31,0,0,137,139,3,70,35,0,138,136,1,0,0,0,139,142,1,0,0,0,140,138,
-1,0,0,0,140,141,1,0,0,0,141,19,1,0,0,0,142,140,1,0,0,0,143,144,5,10,0,0,
-144,145,5,51,0,0,145,21,1,0,0,0,146,147,5,11,0,0,147,148,5,28,0,0,148,23,
-1,0,0,0,149,150,5,14,0,0,150,151,3,68,34,0,151,25,1,0,0,0,152,153,5,15,0,
-0,153,154,3,68,34,0,154,27,1,0,0,0,155,156,5,2,0,0,156,157,3,68,34,0,157,
-29,1,0,0,0,158,159,5,3,0,0,159,160,3,68,34,0,160,31,1,0,0,0,161,162,5,16,
-0,0,162,167,3,70,35,0,163,164,5,31,0,0,164,166,3,70,35,0,165,163,1,0,0,0,
-166,169,1,0,0,0,167,165,1,0,0,0,167,168,1,0,0,0,168,33,1,0,0,0,169,167,1,
-0,0,0,170,171,5,18,0,0,171,172,5,28,0,0,172,35,1,0,0,0,173,174,5,19,0,0,
-174,175,5,28,0,0,175,37,1,0,0,0,176,177,5,20,0,0,177,178,5,29,0,0,178,39,
-1,0,0,0,179,180,5,21,0,0,180,181,3,42,21,0,181,182,3,44,22,0,182,183,3,46,
-23,0,183,184,5,30,0,0,184,41,1,0,0,0,185,186,5,22,0,0,186,187,5,47,0,0,187,
-43,1,0,0,0,188,189,5,23,0,0,189,190,5,47,0,0,190,45,1,0,0,0,191,192,5,24,
-0,0,192,197,3,70,35,0,193,194,5,31,0,0,194,196,3,70,35,0,195,193,1,0,0,0,
-196,199,1,0,0,0,197,195,1,0,0,0,197,198,1,0,0,0,198,47,1,0,0,0,199,197,1,
-0,0,0,200,201,5,25,0,0,201,203,3,2,1,0,202,204,3,50,25,0,203,202,1,0,0,0,
-203,204,1,0,0,0,204,205,1,0,0,0,205,206,3,52,26,0,206,49,1,0,0,0,207,208,
-5,26,0,0,208,213,5,47,0,0,209,210,5,31,0,0,210,212,5,47,0,0,211,209,1,0,
-0,0,212,215,1,0,0,0,213,211,1,0,0,0,213,214,1,0,0,0,214,51,1,0,0,0,215,213,
-1,0,0,0,216,217,5,27,0,0,217,218,3,56,28,0,218,219,5,30,0,0,219,53,1,0,0,
-0,220,221,7,0,0,0,221,55,1,0,0,0,222,226,5,38,0,0,223,225,3,58,29,0,224,
-223,1,0,0,0,225,228,1,0,0,0,226,224,1,0,0,0,226,227,1,0,0,0,227,229,1,0,
-0,0,228,226,1,0,0,0,229,230,5,39,0,0,230,57,1,0,0,0,231,234,3,62,31,0,232,
-234,3,64,32,0,233,231,1,0,0,0,233,232,1,0,0,0,234,59,1,0,0,0,235,236,5,47,
-0,0,236,237,5,32,0,0,237,238,5,47,0,0,238,61,1,0,0,0,239,242,3,66,33,0,240,
-242,3,70,35,0,241,239,1,0,0,0,241,240,1,0,0,0,242,63,1,0,0,0,243,244,5,37,
-0,0,244,245,5,33,0,0,245,246,3,68,34,0,246,247,5,31,0,0,247,250,3,62,31,
-0,248,249,5,31,0,0,249,251,3,62,31,0,250,248,1,0,0,0,250,251,1,0,0,0,251,
-252,1,0,0,0,252,253,5,34,0,0,253,65,1,0,0,0,254,257,5,47,0,0,255,257,3,60,
-30,0,256,254,1,0,0,0,256,255,1,0,0,0,257,258,1,0,0,0,258,259,5,43,0,0,259,
-260,3,68,34,0,260,67,1,0,0,0,261,262,6,34,-1,0,262,275,3,54,27,0,263,275,
-5,47,0,0,264,275,3,60,30,0,265,275,3,70,35,0,266,267,5,44,0,0,267,275,3,
-68,34,7,268,269,5,33,0,0,269,270,3,68,34,0,270,271,5,34,0,0,271,275,1,0,
-0,0,272,273,5,41,0,0,273,275,3,68,34,3,274,261,1,0,0,0,274,263,1,0,0,0,274,
-264,1,0,0,0,274,265,1,0,0,0,274,266,1,0,0,0,274,268,1,0,0,0,274,272,1,0,
-0,0,275,290,1,0,0,0,276,277,10,5,0,0,277,278,5,42,0,0,278,289,3,68,34,6,
-279,280,10,4,0,0,280,281,7,1,0,0,281,289,3,68,34,5,282,283,10,2,0,0,283,
-284,5,46,0,0,284,289,3,68,34,3,285,286,10,1,0,0,286,287,5,45,0,0,287,289,
-3,68,34,2,288,276,1,0,0,0,288,279,1,0,0,0,288,282,1,0,0,0,288,285,1,0,0,
-0,289,292,1,0,0,0,290,288,1,0,0,0,290,291,1,0,0,0,291,69,1,0,0,0,292,290,
-1,0,0,0,293,307,5,47,0,0,294,295,5,33,0,0,295,300,3,68,34,0,296,297,5,31,
-0,0,297,299,3,68,34,0,298,296,1,0,0,0,299,302,1,0,0,0,300,298,1,0,0,0,300,
-301,1,0,0,0,301,303,1,0,0,0,302,300,1,0,0,0,303,304,5,34,0,0,304,308,1,0,
-0,0,305,306,5,33,0,0,306,308,5,34,0,0,307,294,1,0,0,0,307,305,1,0,0,0,308,
-71,1,0,0,0,21,76,78,93,95,112,114,140,167,197,203,213,226,233,241,250,256,
-274,288,290,300,307];
+9,25,3,25,217,8,25,1,26,1,26,1,26,1,26,1,27,1,27,1,28,1,28,5,28,227,8,28,
+10,28,12,28,230,9,28,1,28,1,28,1,29,1,29,3,29,236,8,29,1,30,1,30,1,30,1,
+30,1,31,1,31,3,31,244,8,31,1,32,1,32,1,32,1,32,1,32,1,32,1,32,3,32,253,8,
+32,1,32,1,32,1,33,1,33,3,33,259,8,33,1,33,1,33,1,33,1,34,1,34,1,34,1,34,
+1,34,1,34,1,34,1,34,1,34,1,34,1,34,1,34,1,34,3,34,277,8,34,1,34,1,34,1,34,
+1,34,1,34,1,34,1,34,1,34,1,34,1,34,1,34,1,34,5,34,291,8,34,10,34,12,34,294,
+9,34,1,35,1,35,1,35,1,35,1,35,5,35,301,8,35,10,35,12,35,304,9,35,1,35,1,
+35,1,35,1,35,3,35,310,8,35,1,35,0,1,68,36,0,2,4,6,8,10,12,14,16,18,20,22,
+24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,
+0,2,1,0,28,29,1,0,40,41,317,0,72,1,0,0,0,2,83,1,0,0,0,4,86,1,0,0,0,6,100,
+1,0,0,0,8,119,1,0,0,0,10,122,1,0,0,0,12,125,1,0,0,0,14,128,1,0,0,0,16,131,
+1,0,0,0,18,134,1,0,0,0,20,143,1,0,0,0,22,146,1,0,0,0,24,149,1,0,0,0,26,152,
+1,0,0,0,28,155,1,0,0,0,30,158,1,0,0,0,32,161,1,0,0,0,34,170,1,0,0,0,36,173,
+1,0,0,0,38,176,1,0,0,0,40,179,1,0,0,0,42,185,1,0,0,0,44,188,1,0,0,0,46,191,
+1,0,0,0,48,200,1,0,0,0,50,207,1,0,0,0,52,218,1,0,0,0,54,222,1,0,0,0,56,224,
+1,0,0,0,58,235,1,0,0,0,60,237,1,0,0,0,62,243,1,0,0,0,64,245,1,0,0,0,66,258,
+1,0,0,0,68,276,1,0,0,0,70,295,1,0,0,0,72,78,3,4,2,0,73,77,3,6,3,0,74,77,
+3,40,20,0,75,77,3,48,24,0,76,73,1,0,0,0,76,74,1,0,0,0,76,75,1,0,0,0,77,80,
+1,0,0,0,78,76,1,0,0,0,78,79,1,0,0,0,79,81,1,0,0,0,80,78,1,0,0,0,81,82,5,
+0,0,1,82,1,1,0,0,0,83,84,5,1,0,0,84,85,5,47,0,0,85,3,1,0,0,0,86,95,5,4,0,
+0,87,94,3,8,4,0,88,94,3,10,5,0,89,94,3,12,6,0,90,94,3,14,7,0,91,94,3,16,
+8,0,92,94,3,18,9,0,93,87,1,0,0,0,93,88,1,0,0,0,93,89,1,0,0,0,93,90,1,0,0,
+0,93,91,1,0,0,0,93,92,1,0,0,0,94,97,1,0,0,0,95,93,1,0,0,0,95,96,1,0,0,0,
+96,98,1,0,0,0,97,95,1,0,0,0,98,99,5,30,0,0,99,5,1,0,0,0,100,101,5,9,0,0,
+101,114,3,2,1,0,102,113,3,20,10,0,103,113,3,22,11,0,104,113,3,24,12,0,105,
+113,3,26,13,0,106,113,3,28,14,0,107,113,3,30,15,0,108,113,3,32,16,0,109,
+113,3,34,17,0,110,113,3,36,18,0,111,113,3,38,19,0,112,102,1,0,0,0,112,103,
+1,0,0,0,112,104,1,0,0,0,112,105,1,0,0,0,112,106,1,0,0,0,112,107,1,0,0,0,
+112,108,1,0,0,0,112,109,1,0,0,0,112,110,1,0,0,0,112,111,1,0,0,0,113,116,
+1,0,0,0,114,112,1,0,0,0,114,115,1,0,0,0,115,117,1,0,0,0,116,114,1,0,0,0,
+117,118,5,30,0,0,118,7,1,0,0,0,119,120,5,5,0,0,120,121,5,47,0,0,121,9,1,
+0,0,0,122,123,5,2,0,0,123,124,5,28,0,0,124,11,1,0,0,0,125,126,5,3,0,0,126,
+127,5,28,0,0,127,13,1,0,0,0,128,129,5,6,0,0,129,130,5,28,0,0,130,15,1,0,
+0,0,131,132,5,7,0,0,132,133,5,28,0,0,133,17,1,0,0,0,134,135,5,8,0,0,135,
+140,3,70,35,0,136,137,5,31,0,0,137,139,3,70,35,0,138,136,1,0,0,0,139,142,
+1,0,0,0,140,138,1,0,0,0,140,141,1,0,0,0,141,19,1,0,0,0,142,140,1,0,0,0,143,
+144,5,10,0,0,144,145,5,51,0,0,145,21,1,0,0,0,146,147,5,11,0,0,147,148,5,
+28,0,0,148,23,1,0,0,0,149,150,5,14,0,0,150,151,3,68,34,0,151,25,1,0,0,0,
+152,153,5,15,0,0,153,154,3,68,34,0,154,27,1,0,0,0,155,156,5,2,0,0,156,157,
+3,68,34,0,157,29,1,0,0,0,158,159,5,3,0,0,159,160,3,68,34,0,160,31,1,0,0,
+0,161,162,5,16,0,0,162,167,3,70,35,0,163,164,5,31,0,0,164,166,3,70,35,0,
+165,163,1,0,0,0,166,169,1,0,0,0,167,165,1,0,0,0,167,168,1,0,0,0,168,33,1,
+0,0,0,169,167,1,0,0,0,170,171,5,18,0,0,171,172,3,68,34,0,172,35,1,0,0,0,
+173,174,5,19,0,0,174,175,3,68,34,0,175,37,1,0,0,0,176,177,5,20,0,0,177,178,
+5,29,0,0,178,39,1,0,0,0,179,180,5,21,0,0,180,181,3,42,21,0,181,182,3,44,
+22,0,182,183,3,46,23,0,183,184,5,30,0,0,184,41,1,0,0,0,185,186,5,22,0,0,
+186,187,5,47,0,0,187,43,1,0,0,0,188,189,5,23,0,0,189,190,5,47,0,0,190,45,
+1,0,0,0,191,192,5,24,0,0,192,197,3,70,35,0,193,194,5,31,0,0,194,196,3,70,
+35,0,195,193,1,0,0,0,196,199,1,0,0,0,197,195,1,0,0,0,197,198,1,0,0,0,198,
+47,1,0,0,0,199,197,1,0,0,0,200,201,5,25,0,0,201,203,3,2,1,0,202,204,3,50,
+25,0,203,202,1,0,0,0,203,204,1,0,0,0,204,205,1,0,0,0,205,206,3,52,26,0,206,
+49,1,0,0,0,207,216,5,26,0,0,208,213,5,47,0,0,209,210,5,31,0,0,210,212,5,
+47,0,0,211,209,1,0,0,0,212,215,1,0,0,0,213,211,1,0,0,0,213,214,1,0,0,0,214,
+217,1,0,0,0,215,213,1,0,0,0,216,208,1,0,0,0,216,217,1,0,0,0,217,51,1,0,0,
+0,218,219,5,27,0,0,219,220,3,56,28,0,220,221,5,30,0,0,221,53,1,0,0,0,222,
+223,7,0,0,0,223,55,1,0,0,0,224,228,5,38,0,0,225,227,3,58,29,0,226,225,1,
+0,0,0,227,230,1,0,0,0,228,226,1,0,0,0,228,229,1,0,0,0,229,231,1,0,0,0,230,
+228,1,0,0,0,231,232,5,39,0,0,232,57,1,0,0,0,233,236,3,62,31,0,234,236,3,
+64,32,0,235,233,1,0,0,0,235,234,1,0,0,0,236,59,1,0,0,0,237,238,5,47,0,0,
+238,239,5,32,0,0,239,240,5,47,0,0,240,61,1,0,0,0,241,244,3,66,33,0,242,244,
+3,70,35,0,243,241,1,0,0,0,243,242,1,0,0,0,244,63,1,0,0,0,245,246,5,37,0,
+0,246,247,5,33,0,0,247,248,3,68,34,0,248,249,5,31,0,0,249,252,3,62,31,0,
+250,251,5,31,0,0,251,253,3,62,31,0,252,250,1,0,0,0,252,253,1,0,0,0,253,254,
+1,0,0,0,254,255,5,34,0,0,255,65,1,0,0,0,256,259,5,47,0,0,257,259,3,60,30,
+0,258,256,1,0,0,0,258,257,1,0,0,0,259,260,1,0,0,0,260,261,5,43,0,0,261,262,
+3,68,34,0,262,67,1,0,0,0,263,264,6,34,-1,0,264,277,3,54,27,0,265,277,5,47,
+0,0,266,277,3,60,30,0,267,277,3,70,35,0,268,269,5,44,0,0,269,277,3,68,34,
+7,270,271,5,33,0,0,271,272,3,68,34,0,272,273,5,34,0,0,273,277,1,0,0,0,274,
+275,5,41,0,0,275,277,3,68,34,3,276,263,1,0,0,0,276,265,1,0,0,0,276,266,1,
+0,0,0,276,267,1,0,0,0,276,268,1,0,0,0,276,270,1,0,0,0,276,274,1,0,0,0,277,
+292,1,0,0,0,278,279,10,5,0,0,279,280,5,42,0,0,280,291,3,68,34,6,281,282,
+10,4,0,0,282,283,7,1,0,0,283,291,3,68,34,5,284,285,10,2,0,0,285,286,5,46,
+0,0,286,291,3,68,34,3,287,288,10,1,0,0,288,289,5,45,0,0,289,291,3,68,34,
+2,290,278,1,0,0,0,290,281,1,0,0,0,290,284,1,0,0,0,290,287,1,0,0,0,291,294,
+1,0,0,0,292,290,1,0,0,0,292,293,1,0,0,0,293,69,1,0,0,0,294,292,1,0,0,0,295,
+309,5,47,0,0,296,297,5,33,0,0,297,302,3,68,34,0,298,299,5,31,0,0,299,301,
+3,68,34,0,300,298,1,0,0,0,301,304,1,0,0,0,302,300,1,0,0,0,302,303,1,0,0,
+0,303,305,1,0,0,0,304,302,1,0,0,0,305,306,5,34,0,0,306,310,1,0,0,0,307,308,
+5,33,0,0,308,310,5,34,0,0,309,296,1,0,0,0,309,307,1,0,0,0,310,71,1,0,0,0,
+22,76,78,93,95,112,114,140,167,197,203,213,216,228,235,243,252,258,276,290,
+292,302,309];
 
 
 const atn = new antlr4.atn.ATNDeserializer().deserialize(serializedATN);
@@ -766,7 +767,7 @@ export default class JetejParser extends antlr4.Parser {
 	        this.state = 170;
 	        this.match(JetejParser.OBJECT_MASS);
 	        this.state = 171;
-	        this.match(JetejParser.INTEGER);
+	        this.expression(0);
 	    } catch (re) {
 	    	if(re instanceof antlr4.error.RecognitionException) {
 		        localctx.exception = re;
@@ -791,7 +792,7 @@ export default class JetejParser extends antlr4.Parser {
 	        this.state = 173;
 	        this.match(JetejParser.OBJECT_BOUNCE);
 	        this.state = 174;
-	        this.match(JetejParser.INTEGER);
+	        this.expression(0);
 	    } catch (re) {
 	    	if(re instanceof antlr4.error.RecognitionException) {
 		        localctx.exception = re;
@@ -996,20 +997,26 @@ export default class JetejParser extends antlr4.Parser {
 	        this.enterOuterAlt(localctx, 1);
 	        this.state = 207;
 	        this.match(JetejParser.FUNCTION_PARAM);
-	        this.state = 208;
-	        this.match(JetejParser.IDENTIFIER);
-	        this.state = 213;
+	        this.state = 216;
 	        this._errHandler.sync(this);
 	        _la = this._input.LA(1);
-	        while(_la===31) {
-	            this.state = 209;
-	            this.match(JetejParser.COMMA);
-	            this.state = 210;
+	        if(_la===47) {
+	            this.state = 208;
 	            this.match(JetejParser.IDENTIFIER);
-	            this.state = 215;
+	            this.state = 213;
 	            this._errHandler.sync(this);
 	            _la = this._input.LA(1);
+	            while(_la===31) {
+	                this.state = 209;
+	                this.match(JetejParser.COMMA);
+	                this.state = 210;
+	                this.match(JetejParser.IDENTIFIER);
+	                this.state = 215;
+	                this._errHandler.sync(this);
+	                _la = this._input.LA(1);
+	            }
 	        }
+
 	    } catch (re) {
 	    	if(re instanceof antlr4.error.RecognitionException) {
 		        localctx.exception = re;
@@ -1031,11 +1038,11 @@ export default class JetejParser extends antlr4.Parser {
 	    this.enterRule(localctx, 52, JetejParser.RULE_function_body);
 	    try {
 	        this.enterOuterAlt(localctx, 1);
-	        this.state = 216;
-	        this.match(JetejParser.FUNCTION_BODY);
-	        this.state = 217;
-	        this.block();
 	        this.state = 218;
+	        this.match(JetejParser.FUNCTION_BODY);
+	        this.state = 219;
+	        this.block();
+	        this.state = 220;
 	        this.match(JetejParser.END_OF_LINE);
 	    } catch (re) {
 	    	if(re instanceof antlr4.error.RecognitionException) {
@@ -1059,7 +1066,7 @@ export default class JetejParser extends antlr4.Parser {
 	    var _la = 0; // Token type
 	    try {
 	        this.enterOuterAlt(localctx, 1);
-	        this.state = 220;
+	        this.state = 222;
 	        _la = this._input.LA(1);
 	        if(!(_la===28 || _la===29)) {
 	        this._errHandler.recoverInline(this);
@@ -1090,19 +1097,19 @@ export default class JetejParser extends antlr4.Parser {
 	    var _la = 0; // Token type
 	    try {
 	        this.enterOuterAlt(localctx, 1);
-	        this.state = 222;
+	        this.state = 224;
 	        this.match(JetejParser.BODY_START);
-	        this.state = 226;
+	        this.state = 228;
 	        this._errHandler.sync(this);
 	        _la = this._input.LA(1);
 	        while(_la===37 || _la===47) {
-	            this.state = 223;
+	            this.state = 225;
 	            this.line();
-	            this.state = 228;
+	            this.state = 230;
 	            this._errHandler.sync(this);
 	            _la = this._input.LA(1);
 	        }
-	        this.state = 229;
+	        this.state = 231;
 	        this.match(JetejParser.BODY_END);
 	    } catch (re) {
 	    	if(re instanceof antlr4.error.RecognitionException) {
@@ -1124,17 +1131,17 @@ export default class JetejParser extends antlr4.Parser {
 	    let localctx = new LineContext(this, this._ctx, this.state);
 	    this.enterRule(localctx, 58, JetejParser.RULE_line);
 	    try {
-	        this.state = 233;
+	        this.state = 235;
 	        this._errHandler.sync(this);
 	        switch(this._input.LA(1)) {
 	        case 47:
 	            this.enterOuterAlt(localctx, 1);
-	            this.state = 231;
+	            this.state = 233;
 	            this.statement();
 	            break;
 	        case 37:
 	            this.enterOuterAlt(localctx, 2);
-	            this.state = 232;
+	            this.state = 234;
 	            this.ifBlock();
 	            break;
 	        default:
@@ -1161,11 +1168,11 @@ export default class JetejParser extends antlr4.Parser {
 	    this.enterRule(localctx, 60, JetejParser.RULE_object_attribute);
 	    try {
 	        this.enterOuterAlt(localctx, 1);
-	        this.state = 235;
-	        this.match(JetejParser.IDENTIFIER);
-	        this.state = 236;
-	        this.match(JetejParser.PERIOD);
 	        this.state = 237;
+	        this.match(JetejParser.IDENTIFIER);
+	        this.state = 238;
+	        this.match(JetejParser.PERIOD);
+	        this.state = 239;
 	        this.match(JetejParser.IDENTIFIER);
 	    } catch (re) {
 	    	if(re instanceof antlr4.error.RecognitionException) {
@@ -1187,19 +1194,19 @@ export default class JetejParser extends antlr4.Parser {
 	    let localctx = new StatementContext(this, this._ctx, this.state);
 	    this.enterRule(localctx, 62, JetejParser.RULE_statement);
 	    try {
-	        this.state = 241;
+	        this.state = 243;
 	        this._errHandler.sync(this);
-	        var la_ = this._interp.adaptivePredict(this._input,13,this._ctx);
+	        var la_ = this._interp.adaptivePredict(this._input,14,this._ctx);
 	        switch(la_) {
 	        case 1:
 	            this.enterOuterAlt(localctx, 1);
-	            this.state = 239;
+	            this.state = 241;
 	            this.assignment();
 	            break;
 
 	        case 2:
 	            this.enterOuterAlt(localctx, 2);
-	            this.state = 240;
+	            this.state = 242;
 	            this.funCall();
 	            break;
 
@@ -1226,27 +1233,27 @@ export default class JetejParser extends antlr4.Parser {
 	    var _la = 0; // Token type
 	    try {
 	        this.enterOuterAlt(localctx, 1);
-	        this.state = 243;
-	        this.match(JetejParser.IF);
-	        this.state = 244;
-	        this.match(JetejParser.LPAREN);
 	        this.state = 245;
-	        this.expression(0);
+	        this.match(JetejParser.IF);
 	        this.state = 246;
-	        this.match(JetejParser.COMMA);
+	        this.match(JetejParser.LPAREN);
 	        this.state = 247;
+	        this.expression(0);
+	        this.state = 248;
+	        this.match(JetejParser.COMMA);
+	        this.state = 249;
 	        this.statement();
-	        this.state = 250;
+	        this.state = 252;
 	        this._errHandler.sync(this);
 	        _la = this._input.LA(1);
 	        if(_la===31) {
-	            this.state = 248;
+	            this.state = 250;
 	            this.match(JetejParser.COMMA);
-	            this.state = 249;
+	            this.state = 251;
 	            this.statement();
 	        }
 
-	        this.state = 252;
+	        this.state = 254;
 	        this.match(JetejParser.RPAREN);
 	    } catch (re) {
 	    	if(re instanceof antlr4.error.RecognitionException) {
@@ -1269,24 +1276,24 @@ export default class JetejParser extends antlr4.Parser {
 	    this.enterRule(localctx, 66, JetejParser.RULE_assignment);
 	    try {
 	        this.enterOuterAlt(localctx, 1);
-	        this.state = 256;
+	        this.state = 258;
 	        this._errHandler.sync(this);
-	        var la_ = this._interp.adaptivePredict(this._input,15,this._ctx);
+	        var la_ = this._interp.adaptivePredict(this._input,16,this._ctx);
 	        switch(la_) {
 	        case 1:
-	            this.state = 254;
+	            this.state = 256;
 	            this.match(JetejParser.IDENTIFIER);
 	            break;
 
 	        case 2:
-	            this.state = 255;
+	            this.state = 257;
 	            this.object_attribute();
 	            break;
 
 	        }
-	        this.state = 258;
+	        this.state = 260;
 	        this.match(JetejParser.ASSIGN);
-	        this.state = 259;
+	        this.state = 261;
 	        this.expression(0);
 	    } catch (re) {
 	    	if(re instanceof antlr4.error.RecognitionException) {
@@ -1316,16 +1323,16 @@ export default class JetejParser extends antlr4.Parser {
 	    var _la = 0; // Token type
 	    try {
 	        this.enterOuterAlt(localctx, 1);
-	        this.state = 274;
+	        this.state = 276;
 	        this._errHandler.sync(this);
-	        var la_ = this._interp.adaptivePredict(this._input,16,this._ctx);
+	        var la_ = this._interp.adaptivePredict(this._input,17,this._ctx);
 	        switch(la_) {
 	        case 1:
 	            localctx = new ConstantExpressionContext(this, localctx);
 	            this._ctx = localctx;
 	            _prevctx = localctx;
 
-	            this.state = 262;
+	            this.state = 264;
 	            this.constant();
 	            break;
 
@@ -1333,7 +1340,7 @@ export default class JetejParser extends antlr4.Parser {
 	            localctx = new IdentifierExpressionContext(this, localctx);
 	            this._ctx = localctx;
 	            _prevctx = localctx;
-	            this.state = 263;
+	            this.state = 265;
 	            this.match(JetejParser.IDENTIFIER);
 	            break;
 
@@ -1341,7 +1348,7 @@ export default class JetejParser extends antlr4.Parser {
 	            localctx = new Object_attributeExpressionContext(this, localctx);
 	            this._ctx = localctx;
 	            _prevctx = localctx;
-	            this.state = 264;
+	            this.state = 266;
 	            this.object_attribute();
 	            break;
 
@@ -1349,7 +1356,7 @@ export default class JetejParser extends antlr4.Parser {
 	            localctx = new FunCallExpressionContext(this, localctx);
 	            this._ctx = localctx;
 	            _prevctx = localctx;
-	            this.state = 265;
+	            this.state = 267;
 	            this.funCall();
 	            break;
 
@@ -1357,9 +1364,9 @@ export default class JetejParser extends antlr4.Parser {
 	            localctx = new NotExpressionContext(this, localctx);
 	            this._ctx = localctx;
 	            _prevctx = localctx;
-	            this.state = 266;
+	            this.state = 268;
 	            this.match(JetejParser.NOT);
-	            this.state = 267;
+	            this.state = 269;
 	            this.expression(7);
 	            break;
 
@@ -1367,11 +1374,11 @@ export default class JetejParser extends antlr4.Parser {
 	            localctx = new ParenExpressionContext(this, localctx);
 	            this._ctx = localctx;
 	            _prevctx = localctx;
-	            this.state = 268;
-	            this.match(JetejParser.LPAREN);
-	            this.state = 269;
-	            this.expression(0);
 	            this.state = 270;
+	            this.match(JetejParser.LPAREN);
+	            this.state = 271;
+	            this.expression(0);
+	            this.state = 272;
 	            this.match(JetejParser.RPAREN);
 	            break;
 
@@ -1379,48 +1386,48 @@ export default class JetejParser extends antlr4.Parser {
 	            localctx = new NegativeExpressionContext(this, localctx);
 	            this._ctx = localctx;
 	            _prevctx = localctx;
-	            this.state = 272;
+	            this.state = 274;
 	            this.match(JetejParser.MINUS);
-	            this.state = 273;
+	            this.state = 275;
 	            this.expression(3);
 	            break;
 
 	        }
 	        this._ctx.stop = this._input.LT(-1);
-	        this.state = 290;
+	        this.state = 292;
 	        this._errHandler.sync(this);
-	        var _alt = this._interp.adaptivePredict(this._input,18,this._ctx)
+	        var _alt = this._interp.adaptivePredict(this._input,19,this._ctx)
 	        while(_alt!=2 && _alt!=antlr4.atn.ATN.INVALID_ALT_NUMBER) {
 	            if(_alt===1) {
 	                if(this._parseListeners!==null) {
 	                    this.triggerExitRuleEvent();
 	                }
 	                _prevctx = localctx;
-	                this.state = 288;
+	                this.state = 290;
 	                this._errHandler.sync(this);
-	                var la_ = this._interp.adaptivePredict(this._input,17,this._ctx);
+	                var la_ = this._interp.adaptivePredict(this._input,18,this._ctx);
 	                switch(la_) {
 	                case 1:
 	                    localctx = new MultiplicativeExpressionContext(this, new ExpressionContext(this, _parentctx, _parentState));
 	                    this.pushNewRecursionContext(localctx, _startState, JetejParser.RULE_expression);
-	                    this.state = 276;
+	                    this.state = 278;
 	                    if (!( this.precpred(this._ctx, 5))) {
 	                        throw new antlr4.error.FailedPredicateException(this, "this.precpred(this._ctx, 5)");
 	                    }
-	                    this.state = 277;
+	                    this.state = 279;
 	                    this.match(JetejParser.MULTIOP);
-	                    this.state = 278;
+	                    this.state = 280;
 	                    this.expression(6);
 	                    break;
 
 	                case 2:
 	                    localctx = new AdditiveExpressionContext(this, new ExpressionContext(this, _parentctx, _parentState));
 	                    this.pushNewRecursionContext(localctx, _startState, JetejParser.RULE_expression);
-	                    this.state = 279;
+	                    this.state = 281;
 	                    if (!( this.precpred(this._ctx, 4))) {
 	                        throw new antlr4.error.FailedPredicateException(this, "this.precpred(this._ctx, 4)");
 	                    }
-	                    this.state = 280;
+	                    this.state = 282;
 	                    _la = this._input.LA(1);
 	                    if(!(_la===40 || _la===41)) {
 	                    this._errHandler.recoverInline(this);
@@ -1429,41 +1436,41 @@ export default class JetejParser extends antlr4.Parser {
 	                    	this._errHandler.reportMatch(this);
 	                        this.consume();
 	                    }
-	                    this.state = 281;
+	                    this.state = 283;
 	                    this.expression(5);
 	                    break;
 
 	                case 3:
 	                    localctx = new ComparisonExpressionContext(this, new ExpressionContext(this, _parentctx, _parentState));
 	                    this.pushNewRecursionContext(localctx, _startState, JetejParser.RULE_expression);
-	                    this.state = 282;
+	                    this.state = 284;
 	                    if (!( this.precpred(this._ctx, 2))) {
 	                        throw new antlr4.error.FailedPredicateException(this, "this.precpred(this._ctx, 2)");
 	                    }
-	                    this.state = 283;
+	                    this.state = 285;
 	                    this.match(JetejParser.COMPARE_OP);
-	                    this.state = 284;
+	                    this.state = 286;
 	                    this.expression(3);
 	                    break;
 
 	                case 4:
 	                    localctx = new BooleanExpressionContext(this, new ExpressionContext(this, _parentctx, _parentState));
 	                    this.pushNewRecursionContext(localctx, _startState, JetejParser.RULE_expression);
-	                    this.state = 285;
+	                    this.state = 287;
 	                    if (!( this.precpred(this._ctx, 1))) {
 	                        throw new antlr4.error.FailedPredicateException(this, "this.precpred(this._ctx, 1)");
 	                    }
-	                    this.state = 286;
+	                    this.state = 288;
 	                    this.match(JetejParser.BOOL_OP);
-	                    this.state = 287;
+	                    this.state = 289;
 	                    this.expression(2);
 	                    break;
 
 	                } 
 	            }
-	            this.state = 292;
+	            this.state = 294;
 	            this._errHandler.sync(this);
-	            _alt = this._interp.adaptivePredict(this._input,18,this._ctx);
+	            _alt = this._interp.adaptivePredict(this._input,19,this._ctx);
 	        }
 
 	    } catch( error) {
@@ -1488,37 +1495,37 @@ export default class JetejParser extends antlr4.Parser {
 	    var _la = 0; // Token type
 	    try {
 	        this.enterOuterAlt(localctx, 1);
-	        this.state = 293;
+	        this.state = 295;
 	        this.match(JetejParser.IDENTIFIER);
-	        this.state = 307;
+	        this.state = 309;
 	        this._errHandler.sync(this);
-	        var la_ = this._interp.adaptivePredict(this._input,20,this._ctx);
+	        var la_ = this._interp.adaptivePredict(this._input,21,this._ctx);
 	        switch(la_) {
 	        case 1:
-	            this.state = 294;
+	            this.state = 296;
 	            this.match(JetejParser.LPAREN);
-	            this.state = 295;
+	            this.state = 297;
 	            this.expression(0);
-	            this.state = 300;
+	            this.state = 302;
 	            this._errHandler.sync(this);
 	            _la = this._input.LA(1);
 	            while(_la===31) {
-	                this.state = 296;
+	                this.state = 298;
 	                this.match(JetejParser.COMMA);
-	                this.state = 297;
+	                this.state = 299;
 	                this.expression(0);
-	                this.state = 302;
+	                this.state = 304;
 	                this._errHandler.sync(this);
 	                _la = this._input.LA(1);
 	            }
-	            this.state = 303;
+	            this.state = 305;
 	            this.match(JetejParser.RPAREN);
 	            break;
 
 	        case 2:
-	            this.state = 305;
+	            this.state = 307;
 	            this.match(JetejParser.LPAREN);
-	            this.state = 306;
+	            this.state = 308;
 	            this.match(JetejParser.RPAREN);
 	            break;
 
@@ -2698,8 +2705,8 @@ class Object_massContext extends antlr4.ParserRuleContext {
 	    return this.getToken(JetejParser.OBJECT_MASS, 0);
 	};
 
-	INTEGER() {
-	    return this.getToken(JetejParser.INTEGER, 0);
+	expression() {
+	    return this.getTypedRuleContext(ExpressionContext,0);
 	};
 
 	enterRule(listener) {
@@ -2745,8 +2752,8 @@ class Object_bounceContext extends antlr4.ParserRuleContext {
 	    return this.getToken(JetejParser.OBJECT_BOUNCE, 0);
 	};
 
-	INTEGER() {
-	    return this.getToken(JetejParser.INTEGER, 0);
+	expression() {
+	    return this.getTypedRuleContext(ExpressionContext,0);
 	};
 
 	enterRule(listener) {

@@ -24,8 +24,8 @@ object_size_x:WIDTH expression;
 object_size_y:HEIGHT expression;
 object_update: OBJECT_UPDATE funCall (COMMA funCall)*;
 
-object_mass:OBJECT_MASS INTEGER;
-object_bounce:OBJECT_BOUNCE INTEGER;
+object_mass:OBJECT_MASS expression;
+object_bounce:OBJECT_BOUNCE expression;
 object_collision:OBJECT_COLLISION BOOL;
 
 event:EVENT_HEADER event_object1 event_object2 event_actions END_OF_LINE;
@@ -37,7 +37,7 @@ event_actions:EVENT_ACTIONS funCall (COMMA funCall)*;
 
 
 function:FUNCTION_HEADER name function_param? function_body;
-function_param:FUNCTION_PARAM IDENTIFIER (COMMA IDENTIFIER)*;
+function_param:FUNCTION_PARAM (IDENTIFIER (COMMA IDENTIFIER)*)?;
 function_body:FUNCTION_BODY block END_OF_LINE;
 constant:INTEGER|BOOL;
 block: BODY_START line* BODY_END;
