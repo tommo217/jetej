@@ -20,7 +20,7 @@ image: square;
 name: Hex
 image: hexagon
 speed x: 30
-bounce: 1;
+bounce: 90;
 
 <event>
 object1: Player

@@ -72,18 +72,21 @@ function applyHardBodyCollisionMovementAABB(hb1, hb2) {
     mass_effect1 *= (hb2.mass === -1) ? 1: (hb2.mass / Math.max(hb1.mass + hb2.mass, 0.01));
     mass_effect2 *= (hb1.mass === -1) ? 1 : (hb1.mass / Math.max(hb1.mass + hb2.mass, 0.01));
 
+    let dir;
     if (y_diff < x_diff) {
-        y_diff *= (hb1.y1 < hb2.y1) ? -1 : 1;
+        dir = (hb1.y1 < hb2.y1) ? -1 : 1;
+        y_diff *= dir;
         hb1.move(0, y_diff * mass_effect1);
         hb2.move(0, -y_diff * mass_effect2);
-        hb1.vy *= -1 * hb1.kb;
-        hb2.vy *= -1 * hb2.kb;
+        hb1.vy = (hb1.vy * dir > 0) ? hb1.vy + y_diff * mass_effect1 * hb1.kb : -hb1.vy * hb1.kb;
+        hb2.vy = (hb2.vy * dir < 0) ? hb2.vy - y_diff * mass_effect2 * hb2.kb : -hb2.vy * hb2.kb;
     } else {
-        x_diff *= (hb1.x1 < hb2.x1) ? -1 : 1;
+        dir = (hb1.x1 < hb2.x1) ? -1 : 1;
+        x_diff *= dir;
         hb1.move(x_diff * mass_effect1, 0);
         hb2.move(-x_diff * mass_effect2, 0);
-        hb1.vx *= -1 * hb1.kb;
-        hb2.vx *= -1 * hb2.kb;
+        hb1.vx = (hb1.vx * dir > 0) ? hb1.vx + x_diff * mass_effect1 * hb1.kb : -hb1.vx * hb1.kb;
+        hb2.vx = (hb2.vx * dir < 0) ? hb2.vx - x_diff * mass_effect2 * hb2.kb : -hb2.vx * hb2.kb;
     }
 }
 
@@ -694,6 +697,9 @@ function runGame(jsString) {
     
     script.text = jsString;
     document.body.appendChild(script);
+
+    // timer pre-update
+    time_now = Date.now();
     gameLoop();
 }
 
