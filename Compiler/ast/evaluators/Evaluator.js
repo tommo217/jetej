@@ -269,7 +269,7 @@ export default class Evaluator {
     switch(fun){
       // write special cases here
       case 'positionControls':
-        return ['this', '150', '150'];
+        return ['this'];
       case 'velocityControls':
         return ['this'];
       case 'create':
