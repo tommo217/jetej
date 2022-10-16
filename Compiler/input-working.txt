@@ -2,16 +2,16 @@
 background: black
 score: 30
 time: 300
-init: spawn(Player, 50, 50), spawn(Box, 200, 0);
- 
+init: create(Player, 50, 50), create(Box, 200, 0);
+
 <object>
 name: Player
 image: circle
 life: 2
 speed x:100
-speed y:100 
-update: basicControls();
- 
+speed y:100
+update: positionControls();
+
 <object>
 name: Box
 image: square;
@@ -25,4 +25,4 @@ bounce: 1;
 <event>
 object1: Player
 object2: Box
-actions: spawn(Hex, 150, 150);
+actions: create(Hex, 150, 150);

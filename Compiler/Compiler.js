@@ -32,8 +32,8 @@ export function compile(content) {
   const script = parsedProgram.accept(errorBuilder, evaluator);
   let compileErr = ``;
   if (errorBuilder.length > 0) {
-    for (msg of errorBuilder) {
-      compileErr += `${msg}\n`
+    for (const msg of errorBuilder) {
+      compileErr += `${msg}\n`;
     }
   }
 

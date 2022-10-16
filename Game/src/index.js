@@ -706,8 +706,9 @@ function compileAndRun() {
     // TODO: better error code
     if (output.parseError) {
         window.alert(`Parse Error: \n ${output.parseError}`);
-    } else if(output.compilerError) {
-        window.alert(`Compiler Error: \n ${output.parseError}`); 
+    } else if(output.compileError) {
+        console.log(output.compileError);
+        window.alert(`Compiler Error: \n ${output.compileError}`);
     }
     else {
         console.log(output.result);

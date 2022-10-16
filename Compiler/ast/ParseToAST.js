@@ -108,7 +108,8 @@ export default class parserTreetoAST extends JetejParserVisitor{
       // Visit a parse tree produced by JetejParser#function.
       visitFunction(ctx) {
         let name = ctx.name().IDENTIFIER().getText();
-        let param = ctx.function_param(0).accept(this);
+        let param = [];
+        if(ctx.function_param(0)!=null) param = ctx.function_param(0).accept(this);
         let body = ctx.function_body(0).accept(this);
         let fun =  new FunctionNode(name,param,body);
 

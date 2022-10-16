@@ -1,19 +1,39 @@
+import FunctionNode from "../FunctionNode.js";
+import ObjectNode from "../ObjectNode.js";
 
 export default class Evaluator {
   // identifiers
   identifiers = new Set();
+  objectNames = new Set();
   // function signatures
   functionSigs = new Map()
-  .set('basicControls', new Set([0, 2, 3]))
-  .set('spawn', new Set([3]))
-  .set('disappear', new Set([1]))
-  .set('random', new Set([2])); 
+  .set('positionControls', new Set([0]))
+  .set('velocityControls', new Set([0]))
+  .set('create', new Set([3]))
+  .set('destroy', new Set([1]))
+  .set('delete', new Set([1]))
+  .set('random', new Set([2]))
+  .set('increaseScore', new Set([1]))
+  .set('winGame', new Set([0]))
+  .set('loseGame', new Set([0]));
+
+  gameVariables = new Set()
+  .add('score');
+
+  objectVariables = new Set()
+  .add('life')
+  .add('speed_x')
+  .add('speed_y');
 
   gameScripts = ``;
 
   visitProgram(errors, programNode) {
     console.log(`Visiting Program Node { \nblocks: [\n`);
     let script = ``;
+    for (const block of programNode.blocks) {
+      this.setDefinedVariables(errors, block);
+      if (errors.length) { return; }
+    }
     for (const block of programNode.blocks) {
       const nextBlock = block.accept(errors, this);
       if (errors.length) { return; }
@@ -26,14 +46,13 @@ export default class Evaluator {
 
   visitGame(errors, gameNode) {
     const background = gameNode.background !== null ? `applyBackground("${gameNode.background}");` : ``;
-    
-    // TODO: static check: add corresponding identifiers
+
     const score = gameNode.score !== null ? `initializeVariable("score", ${gameNode.score}); `: ``;
 
     let initCalls = ``;
     for (const fnCall of gameNode.init) {
       initCalls += `${fnCall.accept(errors, this)};`;
-      if (errors.length) { return; }
+      if (errors.length) {errors.push(`At Game definition.`); return; }
     }
 
     this.gameScripts = 
@@ -46,8 +65,8 @@ export default class Evaluator {
   visitObject(errors, objNode) {
 
     // Constructor params
-    let name = objNode.name; // TODO: check for nulls and invalids (existing names, etc)
-    let image = objNode.image; // TODO: check for nulls and invalids
+    let name = objNode.name;
+    let image = objNode.image;
     let sizeX = objNode.width !== null ? objNode.width.accept(errors, this) : 30;
     let sizeY = objNode.height !== null ? objNode.height.accept(errors, this) : 30;
     let mass = objNode.mass !== null ? objNode.mass.accept(errors, this) : 1;
@@ -61,16 +80,14 @@ export default class Evaluator {
     let speed_x = objNode.speed_x ? `this.speed_x = ${objNode.speed_x.accept(errors, this)}; ` : ``;
     let speed_y = objNode.speed_y ? `this.speed_y = ${objNode.speed_y.accept(errors, this)}; ` : ``;
 
-    if (errors.length) { return; }
+    if (errors.length) {errors.push(`At Object ${objNode.name} definition.`); return; }
 
     // Update
     let fnCalls = ``;
     for (const funCall of objNode.update) {
       fnCalls += `${funCall.accept(errors, this)};`;
-      if (errors.length) { return; }
+      if (errors.length) {errors.push(`At Object ${objNode.name} definition.`);  return; }
     }
-
-    // TODO: add name to identifiers for static check
     const script = `
     class ${name} extends GameObject {
       constructor(x, y) {
@@ -88,34 +105,32 @@ export default class Evaluator {
   }
 
   visitEvent(errors, eventNode) {
-
-    // TODO: static check for the existence of identifiers
-    // Actions
+    this.identifiers.add('object1').add('object2');
     let fnCalls = ``;
     for (const action of eventNode.actions) {
       fnCalls += `${action.accept(errors, this)};`;
-      if (errors.length) { return; }
+      if (errors.length) {errors.push(`At Event ${eventNode.obj1}|${eventNode.obj2} definition.`); return; }
     }
 
     const script = `
     eventMap.set("${eventNode.obj1}|${eventNode.obj2}", (object1, object2) => {
       ${fnCalls}
     });`
-
+    this.identifiers.clear();
     return script;
   }
 
   visitFunc(errors, fnNode) {
-
-    // TOTO: static check: add params to identifiers
+    for (const param of fnNode.params) {
+      this.identifiers.add(param);
+    }
     const body = fnNode.body.accept(errors, this);
-    if (errors.length) { return; }
-
+    if (errors.length) {errors.push(`At Function ${fnNode.name} definition.`); return; }
     const script = `
     function ${fnNode.name}(${fnNode.params}) {
       ${body}
     }`
-    // TOTO: static check: remove params from identifiers
+    this.identifiers.clear();
     return script;
   }
 
@@ -130,7 +145,10 @@ export default class Evaluator {
   }
 
   visitAssign(errors, assignNode) {
-    // TODO: static check for the existence of identifier
+    if (typeof assignNode.id == 'string' && !this.identifiers.has(assignNode.id)) {
+      errors.push(`${assignNode.id} is an invalid identifier to assign.`);
+      return;
+    }
     const id = (
       typeof assignNode.id == 'string' ?
       assignNode.id :
@@ -157,8 +175,10 @@ export default class Evaluator {
       return exp.toString();
     }
     else if (typeof exp == 'string') {
-      // this is an IDENTIFIER
-      // TODO: static check: validity of identifier
+      if (!this.identifiers.has(exp) && !this.objectNames.has(exp)) {
+        errors.push(`${exp} is an invalid identifier or an object name as an expression.`);
+        return;
+      }
       return exp;
     }
     else if (typeof exp == 'boolean') {
@@ -169,11 +189,28 @@ export default class Evaluator {
   }
 
   visitAttribute(errors, attrNode) {
-    if (attrNode.className === 'game') {
+    if (attrNode.className == 'game') {
+      if (!this.gameVariables.has(attrNode.field)) {
+        errors.push(`${attrNode.field} is an invalid property for game.`);
+        return;
+      }
       return `gameVariables["${attrNode.field}"]`;
     }
-    // TODO: static check: validity of className
-    return `${attrNode.className}.${attrNode.field}`;
+    if (!this.identifiers.has(attrNode.className)) {
+      errors.push(`${attrNode.className} is an invalid identifier for an attribute.`);
+      return;
+    }
+    if (!this.objectVariables.has(attrNode.field)) {
+      errors.push(`${attrNode.field} is an invalid property for object.`);
+      return;
+    }
+    if (attrNode.field == 'speed_x') {
+      return `${attrNode.className}.hb.vx`;
+    } else if (attrNode.field == 'speed_y'){
+      return `${attrNode.className}.hb.vy`;
+    } else {
+      return `${attrNode.className}.${attrNode.field}`;
+    }
   }
 
   visitNegativeOp(errors, negativeOp) {
@@ -210,17 +247,14 @@ export default class Evaluator {
   }
 
   visitFunCall(errors, funCall) {
-    // Static checks 
-    // TODO: move to static checker
-    // if (!this.functionSigs.has(funCall.name)) {
-    //   errors.push(`${funCall.name} is not a valid function. `);
-    //   return; 
-    // }
-    // if (!this.functionSigs.get(funCall.name).has(funCall.params.length)) {
-    //   errors.push(`Argument count mismatch for function ${funCall.name}. `)
-    //   return; 
-    // }
-    
+    if (!this.functionSigs.has(funCall.name)) {
+      errors.push(`${funCall.name} is not a valid function. `);
+      return;
+    }
+    if (!this.functionSigs.get(funCall.name).has(funCall.params.length)) {
+      errors.push(`Argument count mismatch for function ${funCall.name}. `)
+      return;
+    }
     const params = [];
     for (const param of funCall.params) {
       const str = param.accept(errors, this);
@@ -234,13 +268,13 @@ export default class Evaluator {
   paramMap(fun, p) {
     switch(fun){
       // write special cases here
-      case 'basicControls':
+      case 'positionControls':
         return ['this', '150', '150'];
-      case 'directionControls':
+      case 'velocityControls':
         return ['this'];
-      case 'spawn':
+      case 'create':
         return [`"${p[0]}"`].concat(p.slice(1))
-      case 'score':
+      case 'increaseScore':
         return [`"score"`, p[0]]
       default:
         return p; 
@@ -253,13 +287,32 @@ export default class Evaluator {
       case 'delete': 
       case 'destroy': 
         return `deleteGO`;
-      // TODO: static check for score attribute? 
-      case 'score':
+      case 'increaseScore':
         return `updateVariableBy`;
+      case 'create':
+        return `spawn`;
+      case 'positionControls':
+        return `basicControls`;
+      case 'velocityControls':
+        return `directionControls`;
       default: 
         return fun;
     }
   }
 
-
+  setDefinedVariables(errors, block) {
+    if (block instanceof FunctionNode) {
+       if (this.functionSigs.has(block.name)) {
+          if (this.functionSigs.get(block.name).has(block.params.length)) {
+             errors.push(`the function ${block.name} with ${block.params.length} parameters was already defined.`)
+             return;
+          } else {this.functionSigs.get(block.name).add(block.params.length);}
+       } else {this.functionSigs.set(block.name, new Set([block.params.length]));}
+    } else if (block instanceof ObjectNode) {
+        if (this.objectNames.has(block.name)) {
+          errors.push(`the object ${block.name} was already defined.`);
+          return;
+        } else {this.objectNames.add(block.name);}
+    }
+  }
 }
