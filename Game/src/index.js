@@ -350,12 +350,10 @@ function directionControls(go) {
     const velocity = Math.max(Math.sqrt(speedx*speedx + speedy*speedy), 15); 
 
     if (LEFT | RIGHT | UP | DOWN)  {
-        go.hb.vx = 0;
-        go.hb.vy = 0;
-        if (LEFT) { go.hb.vx = -velocity; }
-        if (RIGHT) { go.hb.vx = velocity; }
-        if (UP) { go.hb.vy = -velocity }
-        if (DOWN) { go.hb.vy = velocity }
+        if (LEFT && go.speed_x!=0) { go.hb.vy = 0; go.hb.vx = -velocity; }
+        if (RIGHT && go.speed_x!=0) { go.hb.vy = 0; go.hb.vx = velocity; }
+        if (UP && go.speed_y!=0) { go.hb.vx = 0; go.hb.vy = -velocity }
+        if (DOWN && go.speed_y!=0) { go.hb.vx = 0; go.hb.vy = velocity }
     }
 }
 

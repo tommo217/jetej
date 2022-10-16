@@ -70,15 +70,15 @@ export default class Evaluator {
     let sizeX = objNode.width !== null ? objNode.width.accept(errors, this) : 30;
     let sizeY = objNode.height !== null ? objNode.height.accept(errors, this) : 30;
     let mass = objNode.mass !== null ? objNode.mass.accept(errors, this) : 1;
-    let vx = objNode.speed_x ? `${objNode.speed_x.accept(errors, this)}` : `0`;
-    let vy = objNode.speed_y ? `${objNode.speed_y.accept(errors, this)}` : `0`;
+    let vx = objNode.speed_x !== null? `${objNode.speed_x.accept(errors, this)}` : `0`;
+    let vy = objNode.speed_y !== null? `${objNode.speed_y.accept(errors, this)}` : `0`;
     let bounce = objNode.bounce !== null ? objNode.bounce.accept(errors, this) / 100.0 : 0;
     let collision = objNode.isCollision !== null ? objNode.isCollision : true;
 
     // Additional fields
     let life = objNode.life ? `this.life = ${objNode.life};` : ``;
-    let speed_x = objNode.speed_x ? `this.speed_x = ${objNode.speed_x.accept(errors, this)}; ` : ``;
-    let speed_y = objNode.speed_y ? `this.speed_y = ${objNode.speed_y.accept(errors, this)}; ` : ``;
+    let speed_x = objNode.speed_x ? `this.speed_x = ${objNode.speed_x.accept(errors, this)}; ` : `this.speed_x = 0;`;
+    let speed_y = objNode.speed_y ? `this.speed_y = ${objNode.speed_y.accept(errors, this)}; ` : `this.speed_y = 0;`;
 
     if (errors.length) {errors.push(`At Object ${objNode.name} definition.`); return; }
 
