@@ -53,7 +53,7 @@ export default class Evaluator {
     let mass = objNode.mass !== null ? objNode.mass.accept(errors, this) : 1;
     let vx = objNode.speed_x ? `${objNode.speed_x.accept(errors, this)}` : `0`;
     let vy = objNode.speed_y ? `${objNode.speed_y.accept(errors, this)}` : `0`;
-    let bounce = objNode.bounce !== null ? objNode.bounce.accept(errors, this) : 0;
+    let bounce = objNode.bounce !== null ? objNode.bounce.accept(errors, this) / 100.0 : 0;
     let collision = objNode.isCollision !== null ? objNode.isCollision : true;
 
     // Additional fields

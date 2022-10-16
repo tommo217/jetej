@@ -76,14 +76,14 @@ function applyHardBodyCollisionMovementAABB(hb1, hb2) {
         y_diff *= (hb1.y1 < hb2.y1) ? -1 : 1;
         hb1.move(0, y_diff * mass_effect1);
         hb2.move(0, -y_diff * mass_effect2);
-        hb1.vy *= -1 * mass_effect1 * hb1.kb;
-        hb2.vy *= -1 * mass_effect2 * hb2.kb;
+        hb1.vy *= -1 * hb1.kb;
+        hb2.vy *= -1 * hb2.kb;
     } else {
         x_diff *= (hb1.x1 < hb2.x1) ? -1 : 1;
         hb1.move(x_diff * mass_effect1, 0);
         hb2.move(-x_diff * mass_effect2, 0);
-        hb1.vx *= -1 * mass_effect1 * hb1.kb;
-        hb2.vx *= -1 * mass_effect2 * hb2.kb;
+        hb1.vx *= -1 * hb1.kb;
+        hb2.vx *= -1 * hb2.kb;
     }
 }
 
@@ -99,7 +99,6 @@ let ratio = canvas.getBoundingClientRect().width / 500;
 window.addEventListener("resize", () => {
     ratio = canvas.getBoundingClientRect().width / 500;
     GameObjectList.forEach(item => {
-        console.log({itemstyle: item})
         item.sprite.objElement.style.height = `${item.sprite.height * ratio}px`;
         item.sprite.objElement.style.width = `${item.sprite.width * ratio}px`;
     })
@@ -357,7 +356,6 @@ function directionControls(go) {
         if (RIGHT) { go.hb.vx = velocity; }
         if (UP) { go.hb.vy = -velocity }
         if (DOWN) { go.hb.vy = velocity }
-        console.log(`Changed direction at v = ${velocity}`)
     }
 }
 

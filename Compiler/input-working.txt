@@ -14,12 +14,13 @@ update: basicControls();
  
 <object>
 name: Box
-image: square
-bounce: 10;
+image: square;
 
 <object>
 name: Hex
-image: hexagon;
+image: hexagon
+speed x: 30
+bounce: 1;
 
 <event>
 object1: Player
