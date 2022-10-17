@@ -626,7 +626,7 @@ function gameLoop() {
     applyCollisionToAllCollidingHitboxes();
 
     updateAllVisualElements();
-    if (isGameOn) {
+    if (!isGameOn) {
         clearGO();
     }
     requestAnimationFrame(gameLoop);
@@ -684,7 +684,18 @@ function gameLoop() {
 
  */
 
+const genClassList = [];
+function addToClassList(cname) {
+    genClassList.push(cname);
+}
+
 function resetGame() {
+    // reset class list
+    genClassList.forEach((cname) => {
+        eval(`${cname}=0;`);
+    });
+    genClassList.splice(0, genClassList.length);
+
     // reset timers
     time_now = Date.now();
 
@@ -692,8 +703,8 @@ function resetGame() {
     isGameOn = true;
 
     // clear engine stuff
-    //eventMap.clear();
-    //clearGO();
+    eventMap.clear();
+    clearGO();
 }
 
 let game_script;
@@ -722,8 +733,8 @@ function compile() {
         window.alert(`Compiler Error: \n ${output.compileError}`);
     }
     else {
+        resetGame();
         console.log(output.result);
-        resetGame()
         reloadScript(output.result);
     }
 }

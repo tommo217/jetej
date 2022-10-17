@@ -89,7 +89,7 @@ export default class Evaluator {
       if (errors.length) {errors.push(`At Object ${objNode.name} definition.`);  return; }
     }
     const script = `
-    class ${name} extends GameObject {
+    ${name} = class extends GameObject {
       constructor(x, y) {
           super("${name}",
               getImage("${image}"),
@@ -100,7 +100,8 @@ export default class Evaluator {
       update() {
           ${fnCalls}
       }
-    }`
+    }
+    addToClassList("${name}");`
     return script; 
   }
 
