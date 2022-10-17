@@ -97,6 +97,8 @@ function applyHardBodyCollisionMovementAABB(hb1, hb2) {
 
  */
 
+const canvas = document.querySelector(".game-frame");
+
 let ratio = canvas.getBoundingClientRect().width / 500;
 
 window.addEventListener("resize", () => {
@@ -259,7 +261,7 @@ const updateVariableTo = (variableName, value) => {
 
 const updateVariableBy = (variableName, changeAmount) => {
     updateVariableTo(variableName, gameVariables[variableName] + changeAmount);
-}    
+}
 
 // Tests to be deleted
 // initializeVariable("score", 0)
@@ -632,52 +634,6 @@ function gameLoop() {
     requestAnimationFrame(gameLoop);
 }
 
-
-/*
-
-------------------------------------------Example Generated Code--------------------------------
-
- */
-
-// class defs
-
-// // TODO delete this class for release, this is a pseudo class for mimicking the compiler output and testing
-// class Block extends GameObject {
-//     constructor(x, y) {
-//         super("Block",
-//             "../rsrc/black_rectangle.png",
-//             x, y, 50, 50, 2, 0, 0, 0, true);
-//     }
-// }
-
-// // TODO delete this class for release, this is a pseudo class for mimicking the compiler output and testing
-// class Player extends GameObject {
-//     constructor(x, y) {
-//         super("Player",
-//             getImage("circle"),
-//             x, y, 50, 50, 1, 0, 0, 0, true);
-//         this.speed_x = 150; //150units/s
-//         this.speed_y = 150;
-//     }
-
-//     update() {
-//         basicControls(this); 
-//     }
-// }
-
-// // TODO this is an example of an event collision function, delete for release
-// eventMap.set("Player|Block", (object1, object2) => {
-//     console.log(object1.objname, object2.objname);
-// });
-
-// // TODO example spawning objects, delete for release
-// GameObjectList.push(new Player(10, 10), new Block(200, 200), new Block(300, 300));
-// spawn(Block, 150, 150); 
-
-// // start game loop
-// gameLoop();
-
-
 /*
 
 -------------------------------Call Compiler & Run Generated Code--------------------------------
@@ -739,6 +695,7 @@ function compile() {
     }
 }
 
+const runButton = document.querySelector(".run-button");
 runButton.addEventListener("click", compile);
 
 gameLoop();
