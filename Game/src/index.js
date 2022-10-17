@@ -97,6 +97,8 @@ function applyHardBodyCollisionMovementAABB(hb1, hb2) {
 
  */
 
+const canvas = document.querySelector(".game-frame");
+
 let ratio = canvas.getBoundingClientRect().width / 500;
 
 window.addEventListener("resize", () => {
@@ -259,7 +261,7 @@ const updateVariableTo = (variableName, value) => {
 
 const updateVariableBy = (variableName, changeAmount) => {
     updateVariableTo(variableName, gameVariables[variableName] + changeAmount);
-}    
+}
 
 // Tests to be deleted
 // initializeVariable("score", 0)
@@ -503,9 +505,6 @@ const endGame = (win) => {
     return () => {
         isGameOn = false;
 
-        canvas.removeEventListener("keydown", handleKeyDown);
-        canvas.removeEventListener("keyup", handleKeyUp);
-
         const modal = createModal();
         const resultDiv = document.createElement("div");
         resultDiv.classList.add("result-message");
@@ -634,56 +633,11 @@ function gameLoop() {
     applyCollisionToAllCollidingHitboxes();
 
     updateAllVisualElements();
-    if (isGameOn) {
-        requestAnimationFrame(gameLoop);
+    if (!isGameOn) {
+        clearGO();
     }
+    requestAnimationFrame(gameLoop);
 }
-
-
-/*
-
-------------------------------------------Example Generated Code--------------------------------
-
- */
-
-// class defs
-
-// // TODO delete this class for release, this is a pseudo class for mimicking the compiler output and testing
-// class Block extends GameObject {
-//     constructor(x, y) {
-//         super("Block",
-//             "../rsrc/black_rectangle.png",
-//             x, y, 50, 50, 2, 0, 0, 0, true);
-//     }
-// }
-
-// // TODO delete this class for release, this is a pseudo class for mimicking the compiler output and testing
-// class Player extends GameObject {
-//     constructor(x, y) {
-//         super("Player",
-//             getImage("circle"),
-//             x, y, 50, 50, 1, 0, 0, 0, true);
-//         this.speed_x = 150; //150units/s
-//         this.speed_y = 150;
-//     }
-
-//     update() {
-//         basicControls(this); 
-//     }
-// }
-
-// // TODO this is an example of an event collision function, delete for release
-// eventMap.set("Player|Block", (object1, object2) => {
-//     console.log(object1.objname, object2.objname);
-// });
-
-// // TODO example spawning objects, delete for release
-// GameObjectList.push(new Player(10, 10), new Block(200, 200), new Block(300, 300));
-// spawn(Block, 150, 150); 
-
-// // start game loop
-// gameLoop();
-
 
 /*
 
@@ -691,24 +645,44 @@ function gameLoop() {
 
  */
 
+const genClassList = [];
+function addToClassList(cname) {
+    genClassList.push(cname);
+}
+
 function resetGame() {
-    // TODO: reset game instance
-}
+    // reset class list
+    genClassList.forEach((cname) => {
+        eval(`${cname}=0;`);
+    });
+    genClassList.splice(0, genClassList.length);
 
-function runGame(jsString) {
-    const script = document.createElement('script')
-    script.id="game-script"
-    script.type = "text/javascript";
-    
-    script.text = jsString;
-    document.body.appendChild(script);
-
-    // timer pre-update
+    // reset timers
     time_now = Date.now();
-    gameLoop();
+
+    // reset isGameOn
+    isGameOn = true;
+
+    // clear engine stuff
+    eventMap.clear();
+    clearGO();
 }
 
-function compileAndRun() {
+let game_script;
+function reloadScript(jsString) {
+    if (game_script) {
+        document.body.removeChild(game_script);
+    }
+
+    game_script = document.createElement('script')
+    game_script.id = "game-script"
+    game_script.type = "text/javascript";
+
+    game_script.text = jsString;
+    document.body.appendChild(game_script);
+}
+
+function compile() {
     const input = window.monacoEditor.getValue();
     const output = Compiler.compile(input);
 
@@ -720,10 +694,13 @@ function compileAndRun() {
         window.alert(`Compiler Error: \n ${output.compileError}`);
     }
     else {
+        resetGame();
         console.log(output.result);
-        // resetGame()
-        runGame(output.result);
+        reloadScript(output.result);
     }
 }
 
-runButton.addEventListener("click", compileAndRun)
+const runButton = document.querySelector(".run-button");
+runButton.addEventListener("click", compile);
+
+gameLoop();
