@@ -263,6 +263,17 @@ const updateVariableBy = (variableName, changeAmount) => {
     updateVariableTo(variableName, gameVariables[variableName] + changeAmount);
 }
 
+const removeVariables = () => {
+    const objectElements = Array.from(canvas.children);
+    objectElements.forEach(el => {
+        if (el.classList.contains("top-bar")) {
+            el.textContent = "";
+        } else {
+            el.remove();
+        }
+    })
+}
+
 // Tests to be deleted
 // initializeVariable("score", 0)
 // updateVariableTo("score", 5);
@@ -444,9 +455,11 @@ const createImage = (imageName, imageSource) => {
   return imageDiv;
 };
 
-const handleImageChange = (e) => {
-  const imageFile = e.target.files[0];
-  const imageName = imageFile.name.split(".")[0].split(" ")[0];
+const uploadImages = (e) => {
+  const imageFiles = e.target.files;
+  for (let i = 0; i < imageFiles.length; i++) {
+    const imageFile = imageFiles[i];
+    const imageName = imageFile.name.split(".")[0].split(" ")[0];
   const ALLOWED_TYPES = ['image/png', 'image/jpeg', 'image/jpg'];
   if (!imageFile || !ALLOWED_TYPES.includes(imageFile.type)) {
     displayError('Please upload a png, jpeg or jpg file')
@@ -464,12 +477,12 @@ const handleImageChange = (e) => {
     const imageDiv = createImage(imageName, imagePreview);
     imageContainer.appendChild(imageDiv)
   };
+  }
 };
 
-fileInput.addEventListener('change', handleImageChange);
+fileInput.addEventListener('change', uploadImages);
 
 updateImages();
-// applyBackground("background");
 
 /*
 
@@ -499,7 +512,6 @@ const endGame = (win) => {
 
     return () => {
         isGameOn = false;
-
         const modal = createModal();
         const resultDiv = document.createElement("div");
         resultDiv.classList.add("result-message");
@@ -628,10 +640,10 @@ function gameLoop() {
     applyCollisionToAllCollidingHitboxes();
 
     updateAllVisualElements();
-    if (!isGameOn) {
-        clearGO();
+
+    if (isGameOn) {
+        requestAnimationFrame(gameLoop);
     }
-    requestAnimationFrame(gameLoop);
 }
 
 /*
@@ -652,15 +664,20 @@ function resetGame() {
     });
     genClassList.splice(0, genClassList.length);
 
+    //reset gameVariables
+    removeVariables()
+    Object.entries(gameVariables).forEach(([key, ]) => gameVariables[key] = null)
+
     // reset timers
     time_now = Date.now();
-
-    // reset isGameOn
-    isGameOn = true;
 
     // clear engine stuff
     eventMap.clear();
     clearGO();
+
+    // reset isGameOn
+    isGameOn = true;
+    gameLoop()
 }
 
 let game_script;
