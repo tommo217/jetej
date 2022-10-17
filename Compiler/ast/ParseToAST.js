@@ -179,15 +179,23 @@ export default class parserTreetoAST extends JetejParserVisitor{
 
       // Visit a parse tree produced by JetejParser#ifBlock.
       visitIfBlock(ctx) {
-        let condition = ctx.expression().accept(this);
-        let lengthStatement = ctx.statement().length;
+        let condition = null;
+        if(ctx.expression()!=null){
+          condition = ctx.expression().accept(this);
+        }
+        let lengthStatement = null;
         let ifTrue = null;
         let ifFalse = null;
-        ifTrue  = ctx.statement(0).accept(this);
-        if (lengthStatement > 1){
-            ifFalse = ctx.statement(1).accept(this);
+        if(ctx.statement()!=null){
+          lengthStatement = ctx.statement().length;
+          if(lengthStatement != 0){
+            ifTrue  = ctx.statement(0).accept(this);
+            if (lengthStatement > 1){
+              ifFalse = ctx.statement(1).accept(this);
 
         }
+      }
+      }
         let ifnode =  new IfNode(condition,ifTrue,ifFalse);
 
         return ifnode;
