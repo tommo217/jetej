@@ -649,7 +649,6 @@ function gameLoop() {
     if (isGameOn) {
         requestAnimationFrame(gameLoop);
     }
-    requestAnimationFrame(gameLoop);
 }
 
 /*
@@ -684,7 +683,6 @@ function resetGame() {
 
     // reset isGameOn
     isGameOn = true;
-    gameLoop()
 }
 
 let game_script;
@@ -700,6 +698,7 @@ function reloadScript(jsString) {
 
     game_script.text = jsString;
     document.body.appendChild(game_script);
+    gameLoop();
 }
 
 function compile() {
