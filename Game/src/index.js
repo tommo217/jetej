@@ -385,7 +385,12 @@ const imageContainer = document.querySelector('.images');
 let imageList = [
   {name: "circle", source: "images/circle.png"},
   {name: "hexagon", source: "images/hexagon.png"},
-  {name: "square", source: "images/square.png"},
+  {name: "yellow-square", source: "images/yellow-square.png"},
+  {name: "orange-square", source: "images/orange-square.png"},
+  {name: "green-square", source: "images/green-square.png"},
+  {name: "red-square", source: "images/red-square.png"},
+  {name: "blue-square", source: "images/blue-square.png"},
+  {name: "white-circle", source: "images/white-circle.png"},
   {name: "triangle", source: "images/triangle.png"},
   {name: "background", source: "images/background.jpg"},
   {name: "transparent", source: "images/transparent.png"},
@@ -644,6 +649,7 @@ function gameLoop() {
     if (isGameOn) {
         requestAnimationFrame(gameLoop);
     }
+    requestAnimationFrame(gameLoop);
 }
 
 /*
@@ -656,6 +662,7 @@ const genClassList = [];
 function addToClassList(cname) {
     genClassList.push(cname);
 }
+
 
 function resetGame() {
     // reset class list
@@ -685,6 +692,7 @@ function reloadScript(jsString) {
     if (game_script) {
         document.body.removeChild(game_script);
     }
+
 
     game_script = document.createElement('script')
     game_script.id = "game-script"
