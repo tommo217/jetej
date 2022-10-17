@@ -12,4 +12,4 @@ const rerunGame = () => {
     })
 }
 
-runButton.addEventListener("click", rerunGame);
+//runButton.addEventListener("click", rerunGame);

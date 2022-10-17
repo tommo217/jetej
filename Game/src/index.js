@@ -498,9 +498,6 @@ const endGame = (win) => {
     return () => {
         isGameOn = false;
 
-        canvas.removeEventListener("keydown", handleKeyDown);
-        canvas.removeEventListener("keyup", handleKeyUp);
-
         const modal = createModal();
         const resultDiv = document.createElement("div");
         resultDiv.classList.add("result-message");
@@ -630,8 +627,9 @@ function gameLoop() {
 
     updateAllVisualElements();
     if (isGameOn) {
-        requestAnimationFrame(gameLoop);
+        clearGO();
     }
+    requestAnimationFrame(gameLoop);
 }
 
 
@@ -687,23 +685,32 @@ function gameLoop() {
  */
 
 function resetGame() {
-    // TODO: reset game instance
-}
-
-function runGame(jsString) {
-    const script = document.createElement('script')
-    script.id="game-script"
-    script.type = "text/javascript";
-    
-    script.text = jsString;
-    document.body.appendChild(script);
-
-    // timer pre-update
+    // reset timers
     time_now = Date.now();
-    gameLoop();
+
+    // reset isGameOn
+    isGameOn = true;
+
+    // clear engine stuff
+    //eventMap.clear();
+    //clearGO();
 }
 
-function compileAndRun() {
+let game_script;
+function reloadScript(jsString) {
+    if (game_script) {
+        document.body.removeChild(game_script);
+    }
+
+    game_script = document.createElement('script')
+    game_script.id = "game-script"
+    game_script.type = "text/javascript";
+
+    game_script.text = jsString;
+    document.body.appendChild(game_script);
+}
+
+function compile() {
     const input = window.monacoEditor.getValue();
     const output = Compiler.compile(input);
 
@@ -716,9 +723,11 @@ function compileAndRun() {
     }
     else {
         console.log(output.result);
-        // resetGame()
-        runGame(output.result);
+        resetGame()
+        reloadScript(output.result);
     }
 }
 
-runButton.addEventListener("click", compileAndRun)
+runButton.addEventListener("click", compile);
+
+gameLoop();
