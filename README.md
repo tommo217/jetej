@@ -1,4 +1,4 @@
-# Project1Group10
+# jetej - A Domain Specific Language for 2D Games
 
 ## To Run
 Our dsl allows users to make 2d single-player games controlled by keyboard.
@@ -19,3 +19,8 @@ Have fun making games!
 
 Web UI uses a webpack-budled compiler located in `Project1Group10/Game/dist/`. To build locally, follow the instructions in [How to compile ANTLR to JavaScript
 ](https://github.students.cs.ubc.ca/CPSC410-2022W-T1/Project1Group10/blob/main/How%20to%20compile%20ANTLR%20to%20JavaScript.md). 
+
+## Credits
+This is a re-hosting of a DSL project at University of British Columbia. All contributions made by `Tom Mo` are mine. 
+
+Thanks to Jacquelin(Yuqing), Edmond, Elise(Sitian), and Jack for their contributions! The name of the DLS reflects all our initals. 
